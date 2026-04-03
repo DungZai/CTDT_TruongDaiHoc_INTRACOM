@@ -1,0 +1,37 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: intracom-training-management
+
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=IntracomTraining;encrypt=true;trustServerCertificate=true
+    username: sa
+    password: your_password
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate          # Không tự tạo/xóa bảng — dùng schema DB có sẵn
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.SQLServerDialect
+
+# JWT config
+app:
+  jwt:
+    secret: IntracomTrainingSecretKey2024_MustBe32CharactersOrMore!
+    expiration-ms: 86400000       # 24 giờ = 24 * 60 * 60 * 1000
+
+# Swagger / OpenAPI
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
