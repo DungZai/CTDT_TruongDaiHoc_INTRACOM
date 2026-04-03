@@ -8,10 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import vn.intracom.training.dto.request.ChuanDauRaRequest;
-import vn.intracom.training.dto.response.ApiResponse;
-import vn.intracom.training.dto.response.ChuanDauRaResponse;
-import vn.intracom.training.service.IChuanDauRaService;
+import vn.intracom.chuongtrinhdaotao.dto.request.ChuanDauRaRequest;
+import vn.intracom.chuongtrinhdaotao.dto.response.ApiResponse;
+import vn.intracom.chuongtrinhdaotao.dto.response.ChuanDauRaResponse;
+import vn.intracom.chuongtrinhdaotao.service.IChuanDauRaService;
 
 import java.util.List;
 
