@@ -119,9 +119,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneral(Exception ex) {
-        log.error("Unexpected error: ", ex);
+        // In ra toàn bộ stack trace để debug
+        log.error("Unexpected error: {}", ex.getMessage(), ex);
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ErrorResponse.of(500, "Lỗi hệ thống, vui lòng thử lại sau"));
+                .body(ErrorResponse.of(500,
+                        // Tạm hiện message thật để debug — xóa ex.getMessage() khi deploy thật
+                        "Lỗi: " + ex.getMessage()));
     }
 }

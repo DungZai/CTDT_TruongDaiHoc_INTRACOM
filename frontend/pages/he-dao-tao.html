@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Hệ đào tạo — Intracom</title>
+<link rel="stylesheet" href="../css/style.css"/>
+</head>
+<body>
+<div class="app-layout">
+  <div id="sidebar-container"></div>
+  <div class="main-content">
+    <div class="topbar">
+      <h1>📚 Quản lý Hệ đào tạo</h1>
+      <div class="topbar-right" id="user-info"></div>
+    </div>
+    <div class="page-content">
+      <div class="card">
+        <div class="section-header">
+          <span id="tbl-count" style="font-size:13px;color:#64748b"></span>
+          <button class="btn btn-primary" onclick="openAdd()">＋ Thêm hệ đào tạo</button>
+        </div>
+        <div class="search-wrap">
+          <input id="search" placeholder="🔍 Tìm theo tên hệ..." oninput="filterRows()"/>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Tên hệ</th><th>Thời gian (năm)</th><th>Tổng tín chỉ</th><th>Mô tả</th><th>Thao tác</th></tr></thead>
+            <tbody id="tbl-body"><tr><td colspan="6" class="table-empty">Đang tải...</td></tr></tbody>
+          </table>
+        </div>
+        <div class="pagination" id="pagination"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-title"></h3>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal()">Hủy</button>
+      <button class="btn btn-primary" id="btn-modal-save">Lưu</button>
+    </div>
+  </div>
+</div>
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/sidebar.js"></script>
+<script src="../js/pages/he-dao-tao.js"></script>
+</body>
+</html>

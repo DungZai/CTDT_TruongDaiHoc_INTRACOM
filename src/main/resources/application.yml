@@ -15,18 +15,20 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update          # Không tự tạo/xóa bảng — dùng schema DB có sẵn
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.SQLServerDialect
+        # ✅ Giữ nguyên tên bảng/cột như trong @Table, @Column — không tự chuyển sang snake_case
+        physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 # JWT config
 app:
   jwt:
     secret: IntracomTrainingSecretKey2024_MustBe32CharactersOrMore!
-    expiration-ms: 86400000       # 24 giờ = 24 * 60 * 60 * 1000
+    expiration-ms: 86400000
 
 # Swagger / OpenAPI
 springdoc:

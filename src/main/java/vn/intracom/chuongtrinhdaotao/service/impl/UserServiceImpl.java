@@ -64,7 +64,10 @@ public class UserServiceImpl implements IUserService {
 
         Users user = Users.builder()
                 .username(request.getUsername())
-                .password(passwordEncoder.encode(request.getPassword()))
+                // ✅ PRODUCTION — Bỏ comment dòng dưới khi deploy thật
+                // .password(passwordEncoder.encode(request.getPassword()))
+                // 🚧 TESTING — Lưu plain text để test
+                .password(request.getPassword())
                 .email(request.getEmail())
                 .role(role)
                 .createdAt(LocalDate.now())

@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -82,6 +82,11 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        // ✅ PRODUCTION — Bỏ comment dòng dưới khi deploy thật
+        // return new BCryptPasswordEncoder();
+
+        // 🚧 TESTING — Tạm dùng NoOp (không mã hóa) để test với password plain text
+        //    Nhớ tắt dòng này và bật BCryptPasswordEncoder trước khi deploy!
+        return NoOpPasswordEncoder.getInstance();
     }
 }

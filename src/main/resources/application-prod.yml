@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:sqlserver://${DB_HOST:localhost}:${DB_PORT:1433};databaseName=${DB_NAME:IntracomTraining};encrypt=true;trustServerCertificate=false
+    url: jdbc:sqlserver://${DB_HOST:localhost}:${DB_PORT:1433};databaseName=${DB_NAME:CTDTDH_INTRACOM};encrypt=true;trustServerCertificate=false
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 

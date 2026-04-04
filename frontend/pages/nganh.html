@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Ngành — Intracom</title>
+<link rel="stylesheet" href="../css/style.css"/>
+</head>
+<body>
+<div class="app-layout">
+  <div id="sidebar-container"></div>
+  <div class="main-content">
+    <div class="topbar">
+      <h1>🏛️ Quản lý Ngành</h1>
+      <div class="topbar-right" id="user-info"></div>
+    </div>
+    <div class="page-content">
+      <div class="card">
+        <div class="section-header">
+          <span id="tbl-count" style="font-size:13px;color:#64748b"></span>
+          <button class="btn btn-primary" onclick="openAdd()">＋ Thêm ngành</button>
+        </div>
+        <div class="search-wrap">
+          <input id="search" placeholder="🔍 Tìm theo mã, tên ngành..." oninput="filterRows()"/>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>ID</th><th>Mã ngành</th><th>Tên ngành</th><th>Mô tả</th><th>Trạng thái</th><th>Thao tác</th></tr>
+            </thead>
+            <tbody id="tbl-body"><tr><td colspan="6" class="table-empty">Đang tải...</td></tr></tbody>
+          </table>
+        </div>
+        <div class="pagination" id="pagination"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-title">Thêm ngành</h3>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal()">Hủy</button>
+      <button class="btn btn-primary" id="btn-modal-save">Lưu</button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/sidebar.js"></script>
+<script src="../js/pages/nganh.js"></script>
+</body>
+</html>

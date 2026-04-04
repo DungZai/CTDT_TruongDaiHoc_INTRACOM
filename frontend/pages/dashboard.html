@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Dashboard — Intracom</title>
+<link rel="stylesheet" href="../css/style.css"/>
+</head>
+<body>
+<div class="app-layout">
+  <div id="sidebar-container"></div>
+  <div class="main-content">
+    <div class="topbar">
+      <h1>📊 Dashboard</h1>
+      <div class="topbar-right" id="user-info"></div>
+    </div>
+    <div class="page-content">
+
+      <!-- Stats -->
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-card"><div class="stat-icon blue">🏛️</div><div><div class="stat-label">Ngành</div><div class="stat-value" id="cnt-nganh">--</div></div></div>
+        <div class="stat-card"><div class="stat-icon green">📚</div><div><div class="stat-label">Hệ đào tạo</div><div class="stat-value" id="cnt-he">--</div></div></div>
+        <div class="stat-card"><div class="stat-icon amber">📋</div><div><div class="stat-label">Chương trình</div><div class="stat-value" id="cnt-ct">--</div></div></div>
+        <div class="stat-card"><div class="stat-icon purple">📖</div><div><div class="stat-label">Môn học</div><div class="stat-value" id="cnt-mon">--</div></div></div>
+        <div class="stat-card"><div class="stat-icon blue">✅</div><div><div class="stat-label">Chuẩn đầu ra</div><div class="stat-value" id="cnt-cdr">--</div></div></div>
+        <div class="stat-card"><div class="stat-icon green">👥</div><div><div class="stat-label">Người dùng</div><div class="stat-value" id="cnt-user">--</div></div></div>
+      </div>
+
+      <!-- Môn học mới nhất -->
+      <div class="card">
+        <div class="card-title">📖 Danh sách môn học gần đây</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Mã môn</th><th>Tên môn</th><th>Tín chỉ</th><th>LT</th><th>TH</th><th>Trạng thái</th></tr></thead>
+            <tbody id="tbl-monhoc"><tr><td colspan="6" class="table-empty">Đang tải...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Chương trình đào tạo -->
+      <div class="card">
+        <div class="card-title">📋 Chương trình đào tạo</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Tên chương trình</th><th>Ngành</th><th>Hệ</th><th>Tổng TC</th><th>Năm PH</th><th>Trạng thái</th></tr></thead>
+            <tbody id="tbl-ct"><tr><td colspan="6" class="table-empty">Đang tải...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/sidebar.js"></script>
+<script src="../js/pages/dashboard.js"></script>
+</body>
+</html>

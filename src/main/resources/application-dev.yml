@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:sqlserver://localhost:1433;databaseName=IntracomTraining;encrypt=true;trustServerCertificate=true
+    url: jdbc:sqlserver://localhost:1433;databaseName=CTDTDH_INTRACOM;encrypt=true;trustServerCertificate=true
     username: sa
     password: your_dev_password
 
