@@ -19,5 +19,6 @@ public class ChuyenNganhRequest {
 
     private String moTa;
 
+    @Builder.Default  // ✅
     private Boolean trangThai = true;
 }

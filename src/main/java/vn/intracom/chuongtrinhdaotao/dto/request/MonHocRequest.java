@@ -31,5 +31,6 @@ public class MonHocRequest {
 
     private String moTa;
 
+    @Builder.Default  // ✅
     private Boolean trangThai = true;
 }

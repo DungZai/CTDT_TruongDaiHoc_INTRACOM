@@ -19,5 +19,6 @@ public class NganhRequest {
 
     private String moTa;
 
+    @Builder.Default  // ✅ Thêm @Builder.Default để giữ giá trị mặc định khi dùng builder
     private Boolean trangThai = true;
 }
