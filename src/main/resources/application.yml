@@ -21,16 +21,28 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.SQLServerDialect
-        # ✅ Giữ nguyên tên bảng/cột như trong @Table, @Column — không tự chuyển sang snake_case
         physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
-# JWT config
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: hdung7047@gmail.com
+    password: "hfbf fokc suxt njyj"
+    properties:
+      mail:
+        debug: true
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          localhost: localhost
+
 app:
   jwt:
     secret: IntracomTrainingSecretKey2024_MustBe32CharactersOrMore!
     expiration-ms: 86400000
 
-# Swagger / OpenAPI
 springdoc:
   api-docs:
     path: /v3/api-docs

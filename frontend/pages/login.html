@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Đăng nhập — QLCTĐT</title>
+  <link rel="stylesheet" href="../libs/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/form.css">
+  <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="logo-icon"><span>🎓</span></div>
+      <h4>Quản lý chương trình đào tạo</h4>
+      <p>Đại học Intracom</p>
+    </div>
+    <form id="form-login">
+      <div class="mb-3">
+        <label class="form-label">Tài khoản</label>
+        <input type="text" id="username" class="form-control" placeholder="Nhập username" autofocus>
+      </div>
+      <div class="mb-4">
+        <label class="form-label">Mật khẩu</label>
+        <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu">
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
+    </form>
+  </div>
+</div>
+<script src="../libs/bootstrap.bundle.min.js"></script>
+<script src="../libs/sweetalert2.all.min.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/auth/token.js"></script>
+<script src="../js/auth/permission.js"></script>
+<script src="../js/components/loading.js"></script>
+<script src="../js/components/toast.js"></script>
+<script src="../js/api/client.js"></script>
+<script src="../js/api/authApi.js"></script>
+<script src="../js/pages/login.js"></script>
+<script>document.addEventListener('DOMContentLoaded', initLogin);</script>
+</body>
+</html>

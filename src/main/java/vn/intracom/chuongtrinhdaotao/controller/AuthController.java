@@ -18,6 +18,8 @@ import vn.intracom.chuongtrinhdaotao.dto.response.JwtResponse;
 import vn.intracom.chuongtrinhdaotao.security.JwtTokenProvider;
 import vn.intracom.chuongtrinhdaotao.service.IUserService;
 
+import vn.intracom.chuongtrinhdaotao.service.OtpService;
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -27,30 +29,42 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final IUserService userService;
+    private final OtpService otpService;
 
     @Operation(summary = "Đăng nhập, trả về JWT token")
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<JwtResponse>> login(
             @Valid @RequestBody LoginRequest request) {
-
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(), request.getPassword()));
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtTokenProvider.generateToken(authentication);
-
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         JwtResponse jwtResponse = userService.buildJwtResponse(userDetails.getUsername(), token);
-
         return ResponseEntity.ok(ApiResponse.success("Đăng nhập thành công", jwtResponse));
     }
 
-    @Operation(summary = "Đăng ký tài khoản mới")
+    @Operation(summary = "Gửi OTP về email trước khi đăng ký")
+    @PostMapping("/send-otp")
+    public ResponseEntity<ApiResponse<Void>> sendOtp(@RequestParam String email) {
+        otpService.sendOtp(email);
+        return ResponseEntity.ok(ApiResponse.success("Đã gửi OTP về email " + email, null));
+    }
+
+    @Operation(summary = "Đăng ký tài khoản — cần xác thực OTP")
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<Void>> register(
             @Valid @RequestBody RegisterRequest request) {
+
+        // Xác thực OTP
+        if (!otpService.verifyOtp(request.getEmail(), request.getOtp())) {
+            return ResponseEntity.badRequest()
+                    .body(ApiResponse.error("Mã OTP không đúng hoặc đã hết hạn"));
+        }
+
         userService.register(request);
+        otpService.clearOtp(request.getEmail()); // Xóa OTP sau khi đăng ký thành công
         return ResponseEntity.ok(ApiResponse.success("Đăng ký thành công", null));
     }
 }

@@ -38,7 +38,7 @@ public class ChuanDauRaController {
 
     @Operation(summary = "Tạo chuẩn đầu ra mới")
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<ChuanDauRaResponse>> create(
             @Valid @RequestBody ChuanDauRaRequest request) {
         return ResponseEntity
@@ -48,7 +48,7 @@ public class ChuanDauRaController {
 
     @Operation(summary = "Cập nhật chuẩn đầu ra")
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<ChuanDauRaResponse>> update(
             @PathVariable Long id,
             @Valid @RequestBody ChuanDauRaRequest request) {
@@ -57,7 +57,7 @@ public class ChuanDauRaController {
 
     @Operation(summary = "Xóa chuẩn đầu ra")
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         chuanDauRaService.delete(id);
         return ResponseEntity.ok(ApiResponse.success("Xóa thành công", null));

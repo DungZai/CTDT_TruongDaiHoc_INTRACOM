@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Đề cương — QLCTĐT</title>
+  <link rel="stylesheet" href="../libs/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/form.css">
+  <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+<main class="main-content">
+  <div class="page-header">
+    <div><h5>Đề cương chi tiết môn học</h5></div>
+  </div>
+  <div class="filter-bar">
+    <select id="sel-dc-mon" class="form-select form-select-sm" style="width:340px"
+      onchange="loadDC(this.value)"></select>
+  </div>
+  <div id="wrap-dc">
+    <p class="text-muted mt-3">Chọn môn học để xem đề cương.</p>
+  </div>
+</main>
+
+<div class="modal fade" id="modal-dc" tabindex="-1">
+  <div class="modal-dialog modal-xl"><div class="modal-content">
+    <div class="modal-header">
+      <h6 class="modal-title">Soạn đề cương chi tiết</h6>
+      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Mục tiêu môn học <span class="text-danger">*</span></label>
+        <textarea id="inp-dc-muctieu" class="form-control form-control-sm" rows="4"></textarea>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Nội dung tóm tắt <span class="text-danger">*</span></label>
+        <textarea id="inp-dc-noidung" class="form-control form-control-sm" rows="4"></textarea>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Phương pháp giảng dạy</label>
+        <textarea id="inp-dc-ppday" class="form-control form-control-sm" rows="3"></textarea>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Phương pháp đánh giá</label>
+        <textarea id="inp-dc-ppdg" class="form-control form-control-sm" rows="3"></textarea>
+      </div>
+      <div class="col-md-8">
+        <label class="form-label">Tài liệu tham khảo</label>
+        <textarea id="inp-dc-tailieu" class="form-control form-control-sm" rows="2"></textarea>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Version</label>
+        <input type="text" id="inp-dc-version" class="form-control form-control-sm" placeholder="VD: 1.0">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Hủy</button>
+      <button class="btn btn-primary btn-sm" onclick="saveDC()">Lưu đề cương</button>
+    </div>
+  </div></div>
+</div>
+
+<script src="../libs/bootstrap.bundle.min.js"></script>
+<script src="../libs/sweetalert2.all.min.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/auth/token.js"></script>
+<script src="../js/auth/guard.js"></script>
+<script src="../js/auth/permission.js"></script>
+<script src="../js/components/loading.js"></script>
+<script src="../js/components/toast.js"></script>
+<script src="../js/components/confirm.js"></script>
+<script src="../js/components/modal.js"></script>
+<script src="../js/components/datatable.js"></script>
+<script src="../js/components/sidebar.js"></script>
+<script src="../js/api/client.js"></script>
+<script src="../js/api/authApi.js"></script>
+<script src="../js/api/monHocApi.js"></script>
+<script src="../js/api/deCuongApi.js"></script>
+<script src="../js/utils/constants.js"></script>
+<script src="../js/utils/formatter.js"></script>
+<script src="../js/utils/validator.js"></script>
+<script src="../js/pages/deCuong.js"></script>
+<script>document.addEventListener('DOMContentLoaded', initDC);</script>
+</body>
+</html>

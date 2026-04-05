@@ -29,10 +29,10 @@ public class DeCuongMonHocServiceImpl implements IDeCuongMonHocService {
     @Override
     @Transactional(readOnly = true)
     public DeCuongMonHocResponse getByMonHoc(Long monHocId) {
-        DeCuongMonHoc dc = deCuongRepository.findByMonHoc_Id(monHocId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Không tìm thấy đề cương cho môn học ID: " + monHocId));
-        return toResponse(dc);
+        // ✅ Trả null thay vì throw 404 khi môn chưa có đề cương
+        return deCuongRepository.findByMonHoc_Id(monHocId)
+                .map(this::toResponse)
+                .orElse(null);
     }
 
     @Override

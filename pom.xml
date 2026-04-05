@@ -106,6 +106,14 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- Thêm vào trong thẻ <dependencies> -->
+
+<!-- Spring Mail — gửi email OTP -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-mail</artifactId>
+</dependency>
+
 	</dependencies>
 
 	<build>

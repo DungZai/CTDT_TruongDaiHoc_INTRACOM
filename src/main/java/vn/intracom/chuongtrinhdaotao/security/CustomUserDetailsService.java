@@ -1,6 +1,5 @@
 package vn.intracom.chuongtrinhdaotao.security;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
@@ -24,9 +23,10 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(
                         "Không tìm thấy người dùng: " + username));
 
-        // Chuyển role thành GrantedAuthority, thêm prefix ROLE_ theo chuẩn Spring Security
+        // ✅ Bỏ prefix "ROLE_" — dùng hasAuthority() thay hasRole()
+        // DB lưu "ADMIN" → authority = "ADMIN" → hasAuthority("ADMIN") ✅
         List<SimpleGrantedAuthority> authorities = List.of(
-                new SimpleGrantedAuthority("ROLE_" + user.getRole().getRoleName().toUpperCase())
+                new SimpleGrantedAuthority(user.getRole().getRoleName().toUpperCase())
         );
 
         return new org.springframework.security.core.userdetails.User(

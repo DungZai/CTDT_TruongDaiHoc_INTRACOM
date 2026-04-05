@@ -1,55 +1,83 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Hệ đào tạo — Intracom</title>
-<link rel="stylesheet" href="../css/style.css"/>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Hệ đào tạo — QLCTĐT</title>
+  <link rel="stylesheet" href="../libs/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/table.css">
+  <link rel="stylesheet" href="../css/form.css">
+  <link rel="stylesheet" href="../css/components.css">
 </head>
 <body>
-<div class="app-layout">
-  <div id="sidebar-container"></div>
-  <div class="main-content">
-    <div class="topbar">
-      <h1>📚 Quản lý Hệ đào tạo</h1>
-      <div class="topbar-right" id="user-info"></div>
+<main class="main-content">
+  <div class="page-header">
+    <div><h5>Hệ đào tạo</h5></div>
+    <button class="btn btn-primary btn-sm" onclick="openHe()" data-role="ADMIN">+ Thêm</button>
+  </div>
+  <div class="filter-bar">
+    <input type="text" id="inp-search-he" class="form-control form-control-sm" style="width:260px"
+      placeholder="Tìm kiếm..." oninput="filterTable('inp-search-he','tbody-he')">
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead><tr><th>#</th><th>Tên hệ</th><th>Thời gian</th><th>Tổng TC mặc định</th><th>Mô tả</th><th>Thao tác</th></tr></thead>
+      <tbody id="tbody-he"></tbody>
+    </table>
+  </div>
+</main>
+
+<div class="modal fade" id="modal-he" tabindex="-1">
+  <div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header">
+      <h6 class="modal-title" id="modal-he-title">Thêm hệ đào tạo</h6>
+      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
     </div>
-    <div class="page-content">
-      <div class="card">
-        <div class="section-header">
-          <span id="tbl-count" style="font-size:13px;color:#64748b"></span>
-          <button class="btn btn-primary" onclick="openAdd()">＋ Thêm hệ đào tạo</button>
-        </div>
-        <div class="search-wrap">
-          <input id="search" placeholder="🔍 Tìm theo tên hệ..." oninput="filterRows()"/>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>ID</th><th>Tên hệ</th><th>Thời gian (năm)</th><th>Tổng tín chỉ</th><th>Mô tả</th><th>Thao tác</th></tr></thead>
-            <tbody id="tbl-body"><tr><td colspan="6" class="table-empty">Đang tải...</td></tr></tbody>
-          </table>
-        </div>
-        <div class="pagination" id="pagination"></div>
+    <div class="modal-body">
+      <div class="mb-2">
+        <label class="form-label">Tên hệ <span class="text-danger">*</span></label>
+        <input type="text" id="inp-ten-he" class="form-control form-control-sm" placeholder="VD: Đại học chính quy">
+      </div>
+      <div class="mb-2">
+        <label class="form-label">Thời gian đào tạo (năm) <span class="text-danger">*</span></label>
+        <input type="number" id="inp-he-tg" class="form-control form-control-sm" min="1" max="10">
+      </div>
+      <div class="mb-2">
+        <label class="form-label">Tổng tín chỉ mặc định <span class="text-danger">*</span></label>
+        <input type="number" id="inp-he-tc" class="form-control form-control-sm" min="1">
+      </div>
+      <div class="mb-2">
+        <label class="form-label">Mô tả</label>
+        <textarea id="inp-he-mota" class="form-control form-control-sm" rows="2"></textarea>
       </div>
     </div>
-  </div>
-</div>
-<div class="modal-overlay" id="modal-overlay">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 id="modal-title"></h3>
-      <button class="modal-close" onclick="closeModal()">×</button>
-    </div>
-    <div class="modal-body" id="modal-body"></div>
     <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal()">Hủy</button>
-      <button class="btn btn-primary" id="btn-modal-save">Lưu</button>
+      <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Hủy</button>
+      <button class="btn btn-primary btn-sm" onclick="saveHe()">Lưu</button>
     </div>
-  </div>
+  </div></div>
 </div>
-<script src="../js/api.js"></script>
-<script src="../js/auth.js"></script>
-<script src="../js/sidebar.js"></script>
-<script src="../js/pages/he-dao-tao.js"></script>
+
+<script src="../libs/bootstrap.bundle.min.js"></script>
+<script src="../libs/sweetalert2.all.min.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/auth/token.js"></script>
+<script src="../js/auth/guard.js"></script>
+<script src="../js/auth/permission.js"></script>
+<script src="../js/components/loading.js"></script>
+<script src="../js/components/toast.js"></script>
+<script src="../js/components/confirm.js"></script>
+<script src="../js/components/modal.js"></script>
+<script src="../js/components/datatable.js"></script>
+<script src="../js/components/sidebar.js"></script>
+<script src="../js/api/client.js"></script>
+<script src="../js/api/authApi.js"></script>
+<script src="../js/api/heDaoTaoApi.js"></script>
+<script src="../js/utils/constants.js"></script>
+<script src="../js/utils/formatter.js"></script>
+<script src="../js/utils/validator.js"></script>
+<script src="../js/pages/heDaoTao.js"></script>
+<script>document.addEventListener('DOMContentLoaded', loadHe);</script>
 </body>
 </html>

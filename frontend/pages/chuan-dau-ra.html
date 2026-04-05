@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Chuẩn đầu ra — QLCTĐT</title>
+  <link rel="stylesheet" href="../libs/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/table.css">
+  <link rel="stylesheet" href="../css/form.css">
+  <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+<main class="main-content">
+  <div class="page-header">
+    <div><h5>Chuẩn đầu ra (PLO)</h5></div>
+    <button class="btn btn-primary btn-sm" onclick="openCDR()" data-role="ADMIN">+ Thêm</button>
+  </div>
+  <div class="filter-bar">
+    <select id="sel-cdr-ct" class="form-select form-select-sm" style="width:280px"
+      onchange="loadCDR(this.value)"></select>
+    <input type="text" id="inp-search-cdr" class="form-control form-control-sm" style="width:200px"
+      placeholder="Tìm kiếm..." oninput="filterTable('inp-search-cdr','tbody-cdr')">
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead><tr><th>#</th><th>Mã chuẩn</th><th>Nội dung</th><th>Chương trình</th><th>Thao tác</th></tr></thead>
+      <tbody id="tbody-cdr"></tbody>
+    </table>
+  </div>
+</main>
+
+<div class="modal fade" id="modal-cdr" tabindex="-1">
+  <div class="modal-dialog modal-lg"><div class="modal-content">
+    <div class="modal-header">
+      <h6 class="modal-title" id="modal-cdr-title">Thêm chuẩn đầu ra</h6>
+      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body row g-2">
+      <div class="col-12">
+        <label class="form-label">Chương trình đào tạo <span class="text-danger">*</span></label>
+        <select id="inp-cdr-ct" class="form-select form-select-sm"></select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Mã chuẩn <span class="text-danger">*</span></label>
+        <input type="text" id="inp-cdr-ma" class="form-control form-control-sm" placeholder="VD: PLO1">
+      </div>
+      <div class="col-12">
+        <label class="form-label">Nội dung <span class="text-danger">*</span></label>
+        <textarea id="inp-cdr-noidung" class="form-control form-control-sm" rows="3"
+          placeholder="Mô tả nội dung chuẩn đầu ra..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Hủy</button>
+      <button class="btn btn-primary btn-sm" onclick="saveCDR()">Lưu</button>
+    </div>
+  </div></div>
+</div>
+
+<script src="../libs/bootstrap.bundle.min.js"></script>
+<script src="../libs/sweetalert2.all.min.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/auth/token.js"></script>
+<script src="../js/auth/guard.js"></script>
+<script src="../js/auth/permission.js"></script>
+<script src="../js/components/loading.js"></script>
+<script src="../js/components/toast.js"></script>
+<script src="../js/components/confirm.js"></script>
+<script src="../js/components/modal.js"></script>
+<script src="../js/components/datatable.js"></script>
+<script src="../js/components/sidebar.js"></script>
+<script src="../js/api/client.js"></script>
+<script src="../js/api/authApi.js"></script>
+<script src="../js/api/chuongTrinhApi.js"></script>
+<script src="../js/api/chuanDauRaApi.js"></script>
+<script src="../js/utils/constants.js"></script>
+<script src="../js/utils/formatter.js"></script>
+<script src="../js/utils/validator.js"></script>
+<script src="../js/pages/chuanDauRa.js"></script>
+<script>document.addEventListener('DOMContentLoaded', initCDR);</script>
+</body>
+</html>

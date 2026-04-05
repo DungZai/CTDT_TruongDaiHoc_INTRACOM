@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Môn học — QLCTĐT</title>
+  <link rel="stylesheet" href="../libs/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/table.css">
+  <link rel="stylesheet" href="../css/form.css">
+  <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+<main class="main-content">
+  <div class="page-header">
+    <div><h5>Danh mục môn học</h5></div>
+    <button class="btn btn-primary btn-sm" onclick="openMon()" data-role="ADMIN">+ Thêm môn học</button>
+  </div>
+  <div class="filter-bar">
+    <input type="text" id="inp-search-mon" class="form-control form-control-sm" style="width:280px"
+      placeholder="Tìm mã môn, tên môn..." oninput="filterTable('inp-search-mon','tbody-mon')">
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead><tr><th>#</th><th>Mã môn</th><th>Tên môn học</th><th>Tín chỉ</th><th>Tiết LT</th><th>Tiết TH</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+      <tbody id="tbody-mon"></tbody>
+    </table>
+  </div>
+</main>
+
+<div class="modal fade" id="modal-mon" tabindex="-1">
+  <div class="modal-dialog modal-lg"><div class="modal-content">
+    <div class="modal-header">
+      <h6 class="modal-title" id="modal-mon-title">Thêm môn học</h6>
+      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body row g-2">
+      <div class="col-md-4">
+        <label class="form-label">Mã môn <span class="text-danger">*</span></label>
+        <input type="text" id="inp-ma-mon" class="form-control form-control-sm" placeholder="VD: CNTT001">
+      </div>
+      <div class="col-md-8">
+        <label class="form-label">Tên môn học <span class="text-danger">*</span></label>
+        <input type="text" id="inp-ten-mon" class="form-control form-control-sm">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Số tín chỉ <span class="text-danger">*</span></label>
+        <input type="number" id="inp-mon-tc" class="form-control form-control-sm" min="1" max="10">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Số tiết lý thuyết</label>
+        <input type="number" id="inp-mon-lt" class="form-control form-control-sm" min="0">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Số tiết thực hành</label>
+        <input type="number" id="inp-mon-th" class="form-control form-control-sm" min="0">
+      </div>
+      <div class="col-12">
+        <label class="form-label">Mô tả</label>
+        <textarea id="inp-mon-mota" class="form-control form-control-sm" rows="2"></textarea>
+      </div>
+      <div class="col-12">
+        <div class="form-check">
+          <input type="checkbox" id="chk-mon-tt" class="form-check-input" checked>
+          <label class="form-check-label" for="chk-mon-tt">Hoạt động</label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Hủy</button>
+      <button class="btn btn-primary btn-sm" onclick="saveMon()">Lưu</button>
+    </div>
+  </div></div>
+</div>
+
+<script src="../libs/bootstrap.bundle.min.js"></script>
+<script src="../libs/sweetalert2.all.min.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/auth/token.js"></script>
+<script src="../js/auth/guard.js"></script>
+<script src="../js/auth/permission.js"></script>
+<script src="../js/components/loading.js"></script>
+<script src="../js/components/toast.js"></script>
+<script src="../js/components/confirm.js"></script>
+<script src="../js/components/modal.js"></script>
+<script src="../js/components/datatable.js"></script>
+<script src="../js/components/sidebar.js"></script>
+<script src="../js/api/client.js"></script>
+<script src="../js/api/authApi.js"></script>
+<script src="../js/api/monHocApi.js"></script>
+<script src="../js/utils/constants.js"></script>
+<script src="../js/utils/formatter.js"></script>
+<script src="../js/utils/validator.js"></script>
+<script src="../js/pages/monHoc.js"></script>
+<script>document.addEventListener('DOMContentLoaded', loadMon);</script>
+</body>
+</html>

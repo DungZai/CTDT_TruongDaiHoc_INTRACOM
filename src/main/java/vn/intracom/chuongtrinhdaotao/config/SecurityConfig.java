@@ -18,10 +18,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import vn.intracom.chuongtrinhdaotao.security.AuthEntryPoint;
 import vn.intracom.chuongtrinhdaotao.security.CustomUserDetailsService;
 import vn.intracom.chuongtrinhdaotao.security.JwtAuthFilter;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity          // Bật @PreAuthorize, @Secured trên method
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -29,7 +30,6 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final AuthEntryPoint authEntryPoint;
 
-    // Các endpoint không cần xác thực
     private static final String[] PUBLIC_URLS = {
             "/api/auth/**",
             "/v3/api-docs/**",
@@ -40,27 +40,31 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            // Tắt CSRF vì dùng JWT (stateless)
             .csrf(AbstractHttpConfigurer::disable)
-
-            // Cấu hình CORS (nếu cần frontend riêng biệt)
             .cors(cors -> cors.configure(http))
-
-            // Xử lý lỗi 401 Unauthorized
             .exceptionHandling(ex -> ex
                     .authenticationEntryPoint(authEntryPoint))
-
-            // Stateless — không dùng session
             .sessionManagement(session -> session
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-            // Phân quyền endpoint
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers(PUBLIC_URLS).permitAll()
-                    .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                    // ✅ Dùng hasAuthority thay hasRole
+                    // hasRole("ADMIN")     → check "ROLE_ADMIN" ❌ không khớp DB
+                    // hasAuthority("ADMIN") → check "ADMIN"     ✅ khớp DB
+                    .requestMatchers("/api/admin/**")
+                        .hasAuthority("ADMIN")
+                    .requestMatchers(HttpMethod.POST, "/api/**")
+                        .hasAnyAuthority("ADMIN", "GIANG_VIEN")
+                    .requestMatchers(HttpMethod.PUT, "/api/**")
+                        .hasAnyAuthority("ADMIN", "GIANG_VIEN")
+                    .requestMatchers(HttpMethod.DELETE, "/api/**")
+                        .hasAuthority("ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/api/**")
+                        .authenticated()
                     .anyRequest().authenticated())
 
-            // Thêm JWT filter trước UsernamePasswordAuthenticationFilter
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -82,11 +86,8 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // ✅ PRODUCTION — Bỏ comment dòng dưới khi deploy thật
-        // return new BCryptPasswordEncoder();
-
-        // 🚧 TESTING — Tạm dùng NoOp (không mã hóa) để test với password plain text
-        //    Nhớ tắt dòng này và bật BCryptPasswordEncoder trước khi deploy!
+        // ✅ PRODUCTION: return new BCryptPasswordEncoder();
+        // 🚧 TESTING:
         return NoOpPasswordEncoder.getInstance();
     }
 }

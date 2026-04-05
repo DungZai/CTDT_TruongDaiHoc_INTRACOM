@@ -32,21 +32,21 @@ public class UserController {
 
     @Operation(summary = "Lấy tất cả người dùng (Admin)")
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<List<UserResponse>>> getAll() {
         return ResponseEntity.ok(ApiResponse.success(userService.getAll()));
     }
 
     @Operation(summary = "Lấy người dùng theo ID (Admin)")
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<UserResponse>> getById(@PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.success(userService.getById(id)));
     }
 
     @Operation(summary = "Xóa người dùng (Admin)")
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         userService.delete(id);
         return ResponseEntity.ok(ApiResponse.success("Xóa thành công", null));

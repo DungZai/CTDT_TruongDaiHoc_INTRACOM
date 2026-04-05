@@ -42,7 +42,7 @@ public class NganhController {
 
     @Operation(summary = "Tạo ngành mới")
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<NganhResponse>> create(
             @Valid @RequestBody NganhRequest request) {
         return ResponseEntity
@@ -52,7 +52,7 @@ public class NganhController {
 
     @Operation(summary = "Cập nhật ngành")
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<NganhResponse>> update(
             @PathVariable Long id,
             @Valid @RequestBody NganhRequest request) {
@@ -61,7 +61,7 @@ public class NganhController {
 
     @Operation(summary = "Xóa ngành")
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         nganhService.delete(id);
         return ResponseEntity.ok(ApiResponse.success("Xóa thành công", null));

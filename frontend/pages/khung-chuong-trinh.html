@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Khung chương trình — QLCTĐT</title>
+  <link rel="stylesheet" href="../libs/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/table.css">
+  <link rel="stylesheet" href="../css/form.css">
+  <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+<main class="main-content">
+  <div class="page-header">
+    <div><h5>Khung chương trình đào tạo</h5></div>
+    <button class="btn btn-primary btn-sm" onclick="openKhung()" data-role="ADMIN">+ Thêm môn</button>
+  </div>
+  <div class="filter-bar">
+    <select id="sel-khung-ct" class="form-select form-select-sm" style="width:300px"
+      onchange="loadKhung(this.value)"></select>
+    <span class="badge" id="lbl-tong-tc"
+      style="background:#dbeafe;color:#1e40af;font-size:12px;padding:6px 14px">Tổng: 0 TC</span>
+  </div>
+  <div id="wrap-khung">
+    <p class="text-muted mt-3">Chọn chương trình để xem khung.</p>
+  </div>
+</main>
+
+<div class="modal fade" id="modal-khung" tabindex="-1">
+  <div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header">
+      <h6 class="modal-title" id="modal-khung-title">Thêm môn vào khung</h6>
+      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body row g-2">
+      <div class="col-12">
+        <label class="form-label">Môn học <span class="text-danger">*</span></label>
+        <select id="inp-khung-mon" class="form-select form-select-sm"></select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Học kỳ</label>
+        <select id="inp-khung-hk" class="form-select form-select-sm">
+          <option value="1">Học kỳ 1</option><option value="2">Học kỳ 2</option>
+          <option value="3">Học kỳ 3</option><option value="4">Học kỳ 4</option>
+          <option value="5">Học kỳ 5</option><option value="6">Học kỳ 6</option>
+          <option value="7">Học kỳ 7</option><option value="8">Học kỳ 8</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Loại môn</label>
+        <select id="inp-khung-loai" class="form-select form-select-sm">
+          <option>Bắt buộc</option><option>Tự chọn</option><option>Tốt nghiệp</option>
+        </select>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Nhóm kiến thức</label>
+        <select id="inp-khung-nhom" class="form-select form-select-sm">
+          <option>Giáo dục đại cương</option>
+          <option>Giáo dục chuyên nghiệp</option>
+          <option>Thực tập - Đồ án</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Thứ tự</label>
+        <input type="number" id="inp-khung-thutu" class="form-control form-control-sm" value="1" min="1">
+      </div>
+      <div class="col-12">
+        <label class="form-label">Ghi chú</label>
+        <textarea id="inp-khung-ghichu" class="form-control form-control-sm" rows="2"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Hủy</button>
+      <button class="btn btn-primary btn-sm" onclick="saveKhung()">Lưu</button>
+    </div>
+  </div></div>
+</div>
+
+<script src="../libs/bootstrap.bundle.min.js"></script>
+<script src="../libs/sweetalert2.all.min.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/auth/token.js"></script>
+<script src="../js/auth/guard.js"></script>
+<script src="../js/auth/permission.js"></script>
+<script src="../js/components/loading.js"></script>
+<script src="../js/components/toast.js"></script>
+<script src="../js/components/confirm.js"></script>
+<script src="../js/components/modal.js"></script>
+<script src="../js/components/datatable.js"></script>
+<script src="../js/components/sidebar.js"></script>
+<script src="../js/api/client.js"></script>
+<script src="../js/api/authApi.js"></script>
+<script src="../js/api/chuongTrinhApi.js"></script>
+<script src="../js/api/khungApi.js"></script>
+<script src="../js/api/monHocApi.js"></script>
+<script src="../js/utils/constants.js"></script>
+<script src="../js/utils/formatter.js"></script>
+<script src="../js/utils/validator.js"></script>
+<script src="../js/pages/khungChuongTrinh.js"></script>
+<script>document.addEventListener('DOMContentLoaded', initKhung);</script>
+</body>
+</html>

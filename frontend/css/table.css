@@ -1,0 +1,24 @@
+.table { font-size: 13px; margin-bottom: 0; }
+
+.table thead th {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary-dark);
+  background: var(--primary-light);
+  border-bottom: 2px solid var(--primary-border);
+  white-space: nowrap;
+  vertical-align: middle;
+  padding: 10px 12px;
+}
+
+.table tbody tr { vertical-align: middle; }
+.table tbody td { padding: 9px 12px; color: var(--text); border-color: #f1f5f9; }
+.table tbody tr:hover { background: var(--primary-light); }
+
+.table-responsive {
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  background: var(--surface);
+}

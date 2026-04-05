@@ -59,7 +59,7 @@ public class ChuongTrinhDaoTaoController {
 
     @Operation(summary = "Tạo chương trình đào tạo mới")
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<ChuongTrinhDaoTaoResponse>> create(
             @Valid @RequestBody ChuongTrinhDaoTaoRequest request) {
         return ResponseEntity
@@ -69,7 +69,7 @@ public class ChuongTrinhDaoTaoController {
 
     @Operation(summary = "Cập nhật chương trình đào tạo")
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<ChuongTrinhDaoTaoResponse>> update(
             @PathVariable Long id,
             @Valid @RequestBody ChuongTrinhDaoTaoRequest request) {
@@ -78,7 +78,7 @@ public class ChuongTrinhDaoTaoController {
 
     @Operation(summary = "Xóa chương trình đào tạo")
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         chuongTrinhService.delete(id);
         return ResponseEntity.ok(ApiResponse.success("Xóa thành công", null));

@@ -56,7 +56,7 @@ public class MonHocController {
 
     @Operation(summary = "Tạo môn học mới")
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<MonHocResponse>> create(
             @Valid @RequestBody MonHocRequest request) {
         return ResponseEntity
@@ -66,7 +66,7 @@ public class MonHocController {
 
     @Operation(summary = "Cập nhật môn học")
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<MonHocResponse>> update(
             @PathVariable Long id,
             @Valid @RequestBody MonHocRequest request) {
@@ -75,7 +75,7 @@ public class MonHocController {
 
     @Operation(summary = "Xóa môn học")
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         monHocService.delete(id);
         return ResponseEntity.ok(ApiResponse.success("Xóa thành công", null));

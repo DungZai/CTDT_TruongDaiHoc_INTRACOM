@@ -37,7 +37,7 @@ public class HeDaoTaoController {
 
     @Operation(summary = "Tạo hệ đào tạo mới")
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<HeDaoTaoResponse>> create(
             @Valid @RequestBody HeDaoTaoRequest request) {
         return ResponseEntity
@@ -47,7 +47,7 @@ public class HeDaoTaoController {
 
     @Operation(summary = "Cập nhật hệ đào tạo")
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<HeDaoTaoResponse>> update(
             @PathVariable Long id,
             @Valid @RequestBody HeDaoTaoRequest request) {
@@ -56,7 +56,7 @@ public class HeDaoTaoController {
 
     @Operation(summary = "Xóa hệ đào tạo")
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         heDaoTaoService.delete(id);
         return ResponseEntity.ok(ApiResponse.success("Xóa thành công", null));

@@ -1,0 +1,71 @@
+/* ── Button ──────────────────────────────────────────────── */
+.btn-primary   { background: var(--primary);  border-color: var(--primary); }
+.btn-primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
+.btn { font-size: 13px; border-radius: 6px; font-weight: 500; }
+.btn-sm { font-size: 12px; padding: 4px 10px; }
+
+/* ── Badge ───────────────────────────────────────────────── */
+.badge { font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 20px; }
+
+/* ── Modal ───────────────────────────────────────────────── */
+.modal-content { border: none; border-radius: 12px; box-shadow: var(--shadow); }
+.modal-header  { background: var(--primary-light); border-bottom: 1px solid var(--primary-border); border-radius: 12px 12px 0 0; padding: 14px 20px; }
+.modal-title   { font-size: 15px; font-weight: 600; color: var(--primary-dark); }
+.modal-footer  { border-top: 1px solid var(--border); padding: 12px 20px; }
+.modal-body    { padding: 20px; }
+
+/* ── Học kỳ block (khung CT) ─────────────────────────────── */
+.hocky-block {
+  border: 1px solid var(--primary-border);
+  border-radius: var(--border-radius);
+  padding: 14px;
+  margin-bottom: 16px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.hocky-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ── Đề cương card ───────────────────────────────────────── */
+.dc-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.dc-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 6px 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 13px;
+}
+
+.dc-row:last-child { border-bottom: none; }
+.dc-label { color: var(--text-muted); font-weight: 500; }
+
+/* ── Ma trận CLO ─────────────────────────────────────────── */
+#wrap-matrix .table th { font-size: 12px; text-align: center; vertical-align: middle; }
+#wrap-matrix .table td { vertical-align: middle; text-align: center; }
+#wrap-matrix .table td:first-child { text-align: left; font-size: 12px; }
+#wrap-matrix .form-select { min-width: 66px; font-size: 12px; }
+
+/* ── Filter bar ──────────────────────────────────────────── */
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+  align-items: center;
+}

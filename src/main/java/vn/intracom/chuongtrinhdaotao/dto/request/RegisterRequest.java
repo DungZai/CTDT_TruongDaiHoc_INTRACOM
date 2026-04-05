@@ -21,5 +21,9 @@ public class RegisterRequest {
     @Email(message = "Email không đúng định dạng")
     private String email;
 
-    private Long roleId;
+    // ✅ Mặc định đăng ký là SINH_VIEN (id=2)
+    private Long roleId = 2L;
+
+    // ✅ Thêm field otp để xác thực email
+    private String otp;
 }

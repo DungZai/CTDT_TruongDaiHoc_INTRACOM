@@ -35,7 +35,7 @@ public class DeCuongMonHocController {
 
     @Operation(summary = "Tạo đề cương môn học mới")
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<DeCuongMonHocResponse>> create(
             @Valid @RequestBody DeCuongMonHocRequest request) {
         return ResponseEntity
@@ -45,7 +45,7 @@ public class DeCuongMonHocController {
 
     @Operation(summary = "Cập nhật đề cương môn học")
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<DeCuongMonHocResponse>> update(
             @PathVariable Long id,
             @Valid @RequestBody DeCuongMonHocRequest request) {
@@ -54,7 +54,7 @@ public class DeCuongMonHocController {
 
     @Operation(summary = "Xóa đề cương môn học")
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         deCuongService.delete(id);
         return ResponseEntity.ok(ApiResponse.success("Xóa thành công", null));

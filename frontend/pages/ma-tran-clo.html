@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ma trận CLO — QLCTĐT</title>
+  <link rel="stylesheet" href="../libs/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/form.css">
+  <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+<main class="main-content">
+  <div class="page-header">
+    <div>
+      <h5>Ma trận CLO — Môn học × Chuẩn đầu ra</h5>
+      <p>Mức độ: <strong>I</strong> = Introduce &nbsp;|&nbsp; <strong>T</strong> = Teach &nbsp;|&nbsp; <strong>U</strong> = Utilize</p>
+    </div>
+  </div>
+  <div class="filter-bar">
+    <select id="sel-mt-ct" class="form-select form-select-sm" style="width:320px"
+      onchange="loadMaTran(this.value)"></select>
+  </div>
+  <div id="wrap-matrix">
+    <p class="text-muted mt-3">Chọn chương trình để hiển thị ma trận.</p>
+  </div>
+</main>
+
+<script src="../libs/bootstrap.bundle.min.js"></script>
+<script src="../libs/sweetalert2.all.min.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/auth/token.js"></script>
+<script src="../js/auth/guard.js"></script>
+<script src="../js/auth/permission.js"></script>
+<script src="../js/components/loading.js"></script>
+<script src="../js/components/toast.js"></script>
+<script src="../js/components/confirm.js"></script>
+<script src="../js/components/modal.js"></script>
+<script src="../js/components/datatable.js"></script>
+<script src="../js/components/sidebar.js"></script>
+<script src="../js/api/client.js"></script>
+<script src="../js/api/authApi.js"></script>
+<script src="../js/api/chuongTrinhApi.js"></script>
+<script src="../js/api/chuanDauRaApi.js"></script>
+<script src="../js/api/khungApi.js"></script>
+<script src="../js/api/monHocApi.js"></script>
+<script src="../js/api/maTranApi.js"></script>
+<script src="../js/utils/constants.js"></script>
+<script src="../js/utils/formatter.js"></script>
+<script src="../js/utils/validator.js"></script>
+<script src="../js/pages/maTranClo.js"></script>
+<script>document.addEventListener('DOMContentLoaded', initMaTran);</script>
+</body>
+</html>

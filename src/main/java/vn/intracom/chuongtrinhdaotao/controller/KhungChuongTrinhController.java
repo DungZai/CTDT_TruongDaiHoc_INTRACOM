@@ -53,7 +53,7 @@ public class KhungChuongTrinhController {
 
     @Operation(summary = "Thêm môn học vào khung chương trình")
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<KhungChuongTrinhResponse>> create(
             @Valid @RequestBody KhungChuongTrinhRequest request) {
         return ResponseEntity
@@ -63,7 +63,7 @@ public class KhungChuongTrinhController {
 
     @Operation(summary = "Cập nhật thông tin môn trong khung")
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<KhungChuongTrinhResponse>> update(
             @PathVariable Long id,
             @Valid @RequestBody KhungChuongTrinhRequest request) {
@@ -72,7 +72,7 @@ public class KhungChuongTrinhController {
 
     @Operation(summary = "Xóa môn học khỏi khung chương trình")
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         khungService.delete(id);
         return ResponseEntity.ok(ApiResponse.success("Xóa thành công", null));

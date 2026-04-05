@@ -1,0 +1,45 @@
+:root {
+  /* ── Màu chủ đạo ─────────────────────────────── */
+  --primary:        #2563eb;
+  --primary-dark:   #1d4ed8;
+  --primary-light:  #eff6ff;
+  --primary-border: #bfdbfe;
+
+  /* ── Sidebar ─────────────────────────────────── */
+  --sb-width:       240px;
+  --sb-bg:          #1e3a5f;
+  --sb-text:        #cbd5e1;
+  --sb-muted:       #64748b;
+  --sb-active-bg:   #2563eb;
+  --sb-active-text: #ffffff;
+  --sb-hover-bg:    #1e4080;
+  --sb-brand:       #60a5fa;
+  --sb-border:      #1e3050;
+
+  /* ── Topbar ──────────────────────────────────── */
+  --tb-height:      56px;
+  --tb-bg:          #ffffff;
+  --tb-border:      #e2e8f0;
+
+  /* ── Nền & bề mặt ────────────────────────────── */
+  --body-bg:        #f0f5ff;
+  --surface:        #ffffff;
+  --border:         #e2e8f0;
+  --border-radius:  8px;
+
+  /* ── Chữ ─────────────────────────────────────── */
+  --text:           #1e293b;
+  --text-muted:     #64748b;
+  --text-light:     #94a3b8;
+
+  /* ── Trạng thái ──────────────────────────────── */
+  --success:        #16a34a;
+  --danger:         #dc2626;
+  --warning:        #d97706;
+  --info:           #0284c7;
+
+  /* ── Hiệu ứng ────────────────────────────────── */
+  --shadow-sm:      0 1px 3px rgba(37,99,235,.08), 0 1px 2px rgba(0,0,0,.04);
+  --shadow:         0 4px 12px rgba(37,99,235,.10), 0 1px 3px rgba(0,0,0,.06);
+  --transition:     0.2s ease;
+}
