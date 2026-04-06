@@ -344,3 +344,20 @@ body {
   .main-content { margin-left: 0; }
   .btn-toggle { display: block; }
 }
+
+
+/* ── Page transition ── */
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.main-content {
+  animation: pageFadeIn .35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+body.page-leaving .main-content {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity .2s ease, transform .2s ease;
+}

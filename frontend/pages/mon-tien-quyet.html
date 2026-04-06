@@ -10,39 +10,77 @@
   <link rel="stylesheet" href="../css/form.css">
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/topbar.css">
+  <link rel="stylesheet" href="../css/sidebar.css">
 </head>
 <body>
 <main class="main-content">
+
+  <!-- Tiêu đề -->
   <div class="page-header">
-    <div><h5>Môn tiên quyết</h5></div>
-    <button class="btn btn-primary btn-sm" onclick="Modal.open('modal-tq')" data-role="ADMIN">+ Thêm</button>
+    <div>
+      <h5>Môn tiên quyết</h5>
+      <p style="font-size:12px;color:#94a3b8;margin:2px 0 0">
+        Chọn môn học để xem và quản lý các môn tiên quyết
+      </p>
+    </div>
+    <button class="btn btn-primary btn-sm" onclick="openModalTQ()" data-role="ADMIN">
+      + Thêm tiên quyết
+    </button>
   </div>
-  <div class="filter-bar">
-    <select id="sel-tq-mon" class="form-select form-select-sm" style="width:320px"
-      onchange="loadTQ(this.value)"></select>
+
+  <!-- Bước 1: Chọn môn học -->
+  <div class="filter-bar" style="align-items:center;gap:10px">
+    <label style="font-size:13px;font-weight:600;color:#475569;white-space:nowrap">
+      Chọn môn học:
+    </label>
+    <select id="sel-tq-mon" class="form-select form-select-sm" style="max-width:360px"
+      onchange="loadTQ(this.value)">
+    </select>
+    <span id="lbl-tq-count" style="font-size:12px;color:#94a3b8;white-space:nowrap"></span>
   </div>
+
+  <!-- Bảng kết quả -->
   <div class="table-responsive">
     <table class="table table-hover">
-      <thead><tr><th>#</th><th>Môn học</th><th>Môn tiên quyết</th><th>Thao tác</th></tr></thead>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Môn học chính</th>
+          <th>Môn tiên quyết</th>
+          <th data-role="ADMIN">Thao tác</th>
+        </tr>
+      </thead>
       <tbody id="tbody-tq"></tbody>
     </table>
   </div>
+
 </main>
 
-<div class="modal fade" id="modal-tq" tabindex="-1">
+<!-- Modal thêm môn tiên quyết -->
+<div class="modal fade" id="modal-tq" tabindex="-1" aria-modal="true" role="dialog">
   <div class="modal-dialog"><div class="modal-content">
     <div class="modal-header">
       <h6 class="modal-title">Thêm môn tiên quyết</h6>
       <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
     </div>
     <div class="modal-body">
-      <div class="mb-2">
-        <label class="form-label">Môn học <span class="text-danger">*</span></label>
+      <!-- Dummy inputs chặn browser autocomplete -->
+      <input type="text"     style="display:none" aria-hidden="true">
+      <input type="password" style="display:none" aria-hidden="true">
+
+      <div class="mb-3">
+        <label class="form-label">
+          Môn học chính <span class="text-danger">*</span>
+        </label>
         <select id="inp-tq-mon" class="form-select form-select-sm"></select>
+        <div class="form-text">Môn học cần có điều kiện tiên quyết</div>
       </div>
       <div class="mb-2">
-        <label class="form-label">Môn tiên quyết <span class="text-danger">*</span></label>
+        <label class="form-label">
+          Môn tiên quyết <span class="text-danger">*</span>
+        </label>
         <select id="inp-tq-montq" class="form-select form-select-sm"></select>
+        <div class="form-text">Môn học phải hoàn thành trước</div>
       </div>
     </div>
     <div class="modal-footer">
@@ -75,6 +113,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', async () => {
     await loadTopbar();
+    await loadSidebar();
     initTQ();
   });
 </script>

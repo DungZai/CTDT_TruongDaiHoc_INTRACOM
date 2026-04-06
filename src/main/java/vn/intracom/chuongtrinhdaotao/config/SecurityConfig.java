@@ -32,6 +32,7 @@ public class SecurityConfig {
 
     private static final String[] PUBLIC_URLS = {
             "/api/auth/**",
+            "/api/files/decuong/**",   // ← thêm dòng này — xem PDF không cần login
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/swagger-ui.html"
@@ -49,10 +50,6 @@ public class SecurityConfig {
 
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers(PUBLIC_URLS).permitAll()
-
-                    // ✅ Dùng hasAuthority thay hasRole
-                    // hasRole("ADMIN")     → check "ROLE_ADMIN" ❌ không khớp DB
-                    // hasAuthority("ADMIN") → check "ADMIN"     ✅ khớp DB
                     .requestMatchers("/api/admin/**")
                         .hasAuthority("ADMIN")
                     .requestMatchers(HttpMethod.POST, "/api/**")

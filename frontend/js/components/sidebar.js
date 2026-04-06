@@ -1,48 +1,83 @@
+/**
+ * sidebar.js — Sidebar thu gọn/mở rộng
+ */
+
 async function loadSidebar() {
-  // pages/ nằm trong frontend/ nên đi lên 2 cấp để tới partials/
-  const res  = await fetch('/frontend/partials/sidebar.html');
-  const html = await res.text();
-  const wrap = document.createElement('div');
-  wrap.innerHTML = html;
-  document.body.insertBefore(wrap, document.body.firstChild);
+  try {
+    const res = await fetch('/frontend/partials/sidebar.html');
+    if (!res.ok) throw new Error('Không tải được sidebar');
+    const html = await res.text();
+    document.body.insertAdjacentHTML('afterbegin', html);
+  } catch (err) {
+    console.error('[Sidebar]', err);
+    return;
+  }
   _initSidebar();
 }
 
 function _initSidebar() {
-  const username = TokenService.getUsername();
+  const sb = document.getElementById('sidebar');
+  if (!sb) return;
 
-  document.querySelectorAll('#sidebar-user, #topbar-user')
-    .forEach(el => { if (el) el.textContent = username; });
+  // ── Toggle mở/đóng ──────────────────────────────────
+  const saved = localStorage.getItem('sb_open');
+  if (saved === 'true') {
+    sb.classList.add('open');
+    document.body.classList.add('sb-open');
+  }
 
-  const av = document.getElementById('topbar-avatar');
-  if (av) av.textContent = username.charAt(0).toUpperCase();
+  document.getElementById('sb-toggle')
+    ?.addEventListener('click', () => {
+      sb.classList.toggle('open');
+      document.body.classList.toggle('sb-open');
+      localStorage.setItem('sb_open', sb.classList.contains('open'));
+    });
 
-  // Active link
+  // ── Gắn thông tin user ──────────────────────────────
+  const username = TokenService.getUsername() || '—';
+  const role     = TokenService.getRole()     || '—';
+
+  const elName   = document.getElementById('sb-username');
+  const elRole   = document.getElementById('sb-role');
+  const elAvatar = document.getElementById('sb-avatar');
+
+  if (elName)   elName.textContent   = username;
+  if (elRole)   elRole.textContent   = _formatRoleSb(role);
+  if (elAvatar) elAvatar.textContent = username[0]?.toUpperCase() ?? '?';
+
+  // ── Hiện menu ADMIN ─────────────────────────────────
+  if (role === 'ADMIN') {
+    document.querySelectorAll('.sb-admin')
+      .forEach(el => el.style.display = '');
+  }
+
+  // ── Active link + fade out khi chuyển trang ─────────
   const cur = window.location.pathname;
-  document.querySelectorAll('.sidebar-link').forEach(a => {
+  document.querySelectorAll('.sb-link').forEach(a => {
     const href = a.getAttribute('href') || '';
-    if (cur.endsWith(href) || cur.includes(href.replace('.html', '')))
+    if (href && (cur.endsWith(href) || cur.includes(href.replace('.html', ''))))
       a.classList.add('active');
+
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.body.classList.add('page-leaving');
+      setTimeout(() => { window.location.href = a.href; }, 200);
+    });
   });
 
-  // Topbar title
-  const active = document.querySelector('.sidebar-link.active');
-  const title  = document.getElementById('topbar-title');
-  if (title && active) title.textContent = active.textContent.trim();
+  // ── Phân quyền UI ───────────────────────────────────
+  if (typeof Permission !== 'undefined') Permission.applyUI();
 
-  // Phân quyền UI
-  Permission.applyUI();
-
-  // Logout
+  // ── Logout ──────────────────────────────────────────
   document.getElementById('btn-logout')
     ?.addEventListener('click', () => authApi.logout());
-
-  // Mobile toggle
-  const sb = document.querySelector('.sidebar');
-  const ov = document.getElementById('sidebar-overlay');
-  document.getElementById('btn-toggle')
-    ?.addEventListener('click', () => { sb?.classList.add('open'); ov?.classList.add('show'); });
-  ov?.addEventListener('click', () => { sb?.classList.remove('open'); ov?.classList.remove('show'); });
 }
 
-document.addEventListener('DOMContentLoaded', loadSidebar);
+function _formatRoleSb(role) {
+  const map = {
+    ADMIN      : 'Quản trị viên',
+    GIANG_VIEN : 'Giảng viên',
+   
+  };
+  return map[role] ?? role;
+}

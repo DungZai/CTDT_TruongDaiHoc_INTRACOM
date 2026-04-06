@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="../css/form.css">
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/topbar.css">
+  <link rel="stylesheet" href="../css/sidebar.css">
 </head>
 <body>
 <main class="main-content">
@@ -19,13 +20,13 @@
   </div>
   <div class="filter-bar">
     <select id="sel-cn-nganh-filter" class="form-select form-select-sm" style="width:200px"
-      onchange="renderCN(_cnAll.filter(d => !this.value || d.nganh_id === Number(this.value)))"></select>
+      onchange="filterCN()"></select>
     <input type="text" id="inp-search-cn" class="form-control form-control-sm" style="width:220px"
-      placeholder="Tìm kiếm..." oninput="filterTable('inp-search-cn','tbody-cn')">
+      placeholder="Tìm kiếm..." autocomplete="off" oninput="filterCN()">
   </div>
   <div class="table-responsive">
     <table class="table table-hover">
-      <thead><tr><th>#</th><th>Tên chuyên ngành</th><th>Thuộc ngành</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+      <thead><tr><th>#</th><th>Tên chuyên ngành</th><th>Thuộc ngành</th><th>Trạng thái</th><th></th></tr></thead>
       <tbody id="tbody-cn"></tbody>
     </table>
   </div>
@@ -44,7 +45,7 @@
       </div>
       <div class="mb-2">
         <label class="form-label">Tên chuyên ngành <span class="text-danger">*</span></label>
-        <input type="text" id="inp-ten-cn" class="form-control form-control-sm">
+        <input type="text" id="inp-ten-cn" class="form-control form-control-sm" autocomplete="off">
       </div>
       <div class="mb-2">
         <label class="form-label">Mô tả</label>
@@ -86,6 +87,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', async () => {
     await loadTopbar();
+    await loadSidebar();
     loadCN();
   });
 </script>

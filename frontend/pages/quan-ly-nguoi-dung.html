@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="../css/form.css">
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/topbar.css">
+  <link rel="stylesheet" href="../css/sidebar.css">
 </head>
 <body>
 <main class="main-content">
@@ -18,35 +19,46 @@
     <button class="btn btn-primary btn-sm" onclick="openUser()">+ Thêm tài khoản</button>
   </div>
   <div class="filter-bar">
-    <input type="text" id="inp-search-user" class="form-control form-control-sm" style="width:260px"
-      placeholder="Tìm username, email..." oninput="filterTable('inp-search-user','tbody-users')">
+    <input type="text" id="inp-search-user" class="form-control form-control-sm"
+      style="width:260px" placeholder="Tìm username, email..."
+      autocomplete="off"
+      oninput="filterTable('inp-search-user','tbody-users')">
   </div>
   <div class="table-responsive">
     <table class="table table-hover">
-      <thead><tr><th>#</th><th>Username</th><th>Email</th><th>Vai trò</th><th>Ngày tạo</th><th>Thao tác</th></tr></thead>
+      <thead>
+        <tr><th>#</th><th>Username</th><th>Email</th><th>Vai trò</th><th>Ngày tạo</th><th></th></tr>
+      </thead>
       <tbody id="tbody-users"></tbody>
     </table>
   </div>
 </main>
 
-<div class="modal fade" id="modal-user" tabindex="-1">
+<!-- Modal -->
+<div class="modal fade" id="modal-user" tabindex="-1" aria-modal="true" role="dialog">
   <div class="modal-dialog"><div class="modal-content">
     <div class="modal-header">
       <h6 class="modal-title" id="modal-user-title">Thêm tài khoản</h6>
       <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
     </div>
     <div class="modal-body row g-2">
+      <!-- Trick chặn browser autocomplete -->
+      <input type="text" style="display:none" aria-hidden="true">
+      <input type="password" style="display:none" aria-hidden="true">
       <div class="col-12">
         <label class="form-label">Username <span class="text-danger">*</span></label>
-        <input type="text" id="inp-username" class="form-control form-control-sm">
+        <input type="text" id="inp-username" class="form-control form-control-sm"
+          autocomplete="off">
       </div>
       <div class="col-12" id="wrap-user-pw">
         <label class="form-label">Mật khẩu <span class="text-danger">*</span></label>
-        <input type="password" id="inp-user-pw" class="form-control form-control-sm">
+        <input type="password" id="inp-user-pw" class="form-control form-control-sm"
+          autocomplete="new-password">
       </div>
       <div class="col-12">
         <label class="form-label">Email</label>
-        <input type="email" id="inp-user-email" class="form-control form-control-sm">
+        <input type="email" id="inp-user-email" class="form-control form-control-sm"
+          autocomplete="off">
       </div>
       <div class="col-12">
         <label class="form-label">Vai trò <span class="text-danger">*</span></label>
@@ -83,6 +95,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', async () => {
     await loadTopbar();
+    await loadSidebar();
     loadUsers();
   });
 </script>

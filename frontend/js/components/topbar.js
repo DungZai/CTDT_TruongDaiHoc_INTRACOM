@@ -40,17 +40,16 @@ async function loadTopbar() {
 
 // ── Shared bind (dùng chung cho cả initTopbar và loadTopbar) ─────────────────
 function _bindTopbar() {
-  const user     = TokenService.getUser?.() ?? {};
-  const fullName = user.fullName ?? user.name ?? user.username ?? '—';
-  const role     = user.role ?? TokenService.getRole?.() ?? '—';
+  const username = TokenService.getUsername?.() || '—';
+  const role     = TokenService.getRole?.()     || '—';
 
   const elName   = document.getElementById('topbar-username');
   const elRole   = document.getElementById('topbar-role');
   const elAvatar = document.getElementById('topbar-avatar-text');
 
-  if (elName)   elName.textContent   = fullName;
+  if (elName)   elName.textContent   = username;
   if (elRole)   elRole.textContent   = _formatRole(role);
-  if (elAvatar) elAvatar.textContent = _getInitial(fullName);
+  if (elAvatar) elAvatar.textContent = _getInitial(username);
 
   // Ẩn subbar nếu đang ở dashboard, hiện nếu ở trang con
   const subbar = document.getElementById('topbar-subbar');
@@ -62,7 +61,7 @@ function _bindTopbar() {
   document.getElementById('btn-logout-top')
     ?.addEventListener('click', async (e) => {
       e.preventDefault();
-      try { await AuthApi.logout?.(); } catch (_) { /* ignore */ }
+      try { await authApi.logout?.(); } catch (_) { /* ignore */ }
       TokenService.clear?.();
       window.location.href = '../pages/login.html';
     });

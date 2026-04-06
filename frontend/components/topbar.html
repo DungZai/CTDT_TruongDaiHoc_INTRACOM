@@ -2,28 +2,18 @@
 <div class="topbar">
   <div class="topbar-left">
     <a href="dashboard.html" class="topbar-logo" title="Trang chủ">🎓</a>
-
     <div class="topbar-brand">
       QLCTĐT
       <span>Đại học Intracom</span>
     </div>
-
-<!-- Thanh quay lại — nằm ngay dưới topbar -->
-<div class="topbar-subbar hidden" id="topbar-subbar">
-  <button class="topbar-back" onclick="history.back()">
-    ← Quay lại
-  </button>
-</div>
   </div>
 
   <div class="topbar-right">
-    <!-- Chuông thông báo -->
     <div class="topbar-bell" id="topbar-bell">
       🔔
       <div class="bell-badge" id="bell-badge" style="display:none">0</div>
     </div>
 
-    <!-- Avatar + dropdown -->
     <div class="topbar-user" id="topbar-user-wrap">
       <div class="topbar-avatar" id="topbar-avatar-wrap">
         <span id="topbar-avatar-text"></span>
@@ -34,18 +24,11 @@
       </div>
       <span class="topbar-caret">▼</span>
 
-      <!-- Dropdown -->
       <div class="dropdown-menu-custom">
-        <a class="dropdown-item-custom" href="#">
-          👤 Thông tin cá nhân
-        </a>
-        <a class="dropdown-item-custom" href="#">
-          🔑 Đổi mật khẩu
-        </a>
+        <a class="dropdown-item-custom" href="#">👤 Thông tin cá nhân</a>
+        <a class="dropdown-item-custom" href="#">🔑 Đổi mật khẩu</a>
         <div class="dropdown-divider-custom"></div>
-        <a class="dropdown-item-custom danger" href="#" id="btn-logout-top">
-          🚪 Đăng xuất
-        </a>
+        <a class="dropdown-item-custom danger" href="#" id="btn-logout-top">🚪 Đăng xuất</a>
       </div>
     </div>
   </div>

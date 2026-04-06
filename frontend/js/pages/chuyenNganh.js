@@ -21,6 +21,21 @@ function renderCN(data) {
   });
 }
 
+function filterCN() {
+  const ngId = Number(document.getElementById('sel-cn-nganh-filter').value);
+  const kw   = document.getElementById('inp-search-cn')?.value.toLowerCase() ?? '';
+
+  const filtered = _cnAll.filter(d => {
+    const matchNganh = !ngId || d.nganhId === ngId;
+    const tenNganh   = _cnNganh.find(n => n.id === d.nganhId)?.tenNganh || '';
+    const matchKw    = !kw
+      || d.tenChuyenNganh?.toLowerCase().includes(kw)
+      || tenNganh.toLowerCase().includes(kw);
+    return matchNganh && matchKw;
+  });
+  renderCN(filtered);
+}
+
 function openCN() {
   _cnEditId = null;
   Modal.reset('modal-cn');

@@ -9,6 +9,22 @@
   <link rel="stylesheet" href="../css/form.css">
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/topbar.css">
+  <link rel="stylesheet" href="../css/sidebar.css">
+  <style>
+    .dc-card {
+      background: #fff; border-radius: 12px;
+      border: 1px solid #e8edf5; padding: 20px 24px;
+      box-shadow: 0 1px 6px rgba(0,0,0,.05);
+    }
+    .dc-row {
+      display: grid; grid-template-columns: 160px 1fr;
+      gap: 8px; padding: 10px 0;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 13px;
+    }
+    .dc-row:last-child { border-bottom: none; }
+    .dc-label { color: #64748b; font-weight: 600; }
+  </style>
 </head>
 <body>
 <main class="main-content">
@@ -24,10 +40,11 @@
   </div>
 </main>
 
-<div class="modal fade" id="modal-dc" tabindex="-1">
+<!-- ── Modal soạn / sửa đề cương ── -->
+<div class="modal fade" id="modal-dc" tabindex="-1" aria-modal="true" role="dialog">
   <div class="modal-dialog modal-xl"><div class="modal-content">
     <div class="modal-header">
-      <h6 class="modal-title">Soạn đề cương chi tiết</h6>
+      <h6 class="modal-title" id="lbl-dc-modal-title">Soạn đề cương</h6>
       <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
     </div>
     <div class="modal-body row g-3">
@@ -47,13 +64,28 @@
         <label class="form-label">Phương pháp đánh giá</label>
         <textarea id="inp-dc-ppdg" class="form-control form-control-sm" rows="3"></textarea>
       </div>
-      <div class="col-md-8">
-        <label class="form-label">Tài liệu tham khảo</label>
-        <textarea id="inp-dc-tailieu" class="form-control form-control-sm" rows="2"></textarea>
-      </div>
       <div class="col-md-4">
-        <label class="form-label">Version</label>
-        <input type="text" id="inp-dc-version" class="form-control form-control-sm" placeholder="VD: 1.0">
+        <label class="form-label">Phiên bản</label>
+        <input type="text" id="inp-dc-version" class="form-control form-control-sm"
+               placeholder="1.0">
+      </div>
+
+      <!-- Tài liệu PDF -->
+      <div class="col-12">
+        <label class="form-label">Tài liệu PDF</label>
+        <div id="wrap-tailieu-current" style="display:none; margin-bottom:8px">
+          <a id="lnk-tailieu-current" href="#" target="_blank"
+             class="btn btn-sm btn-outline-info">
+            📄 Xem tài liệu hiện tại
+          </a>
+          <span class="text-muted ms-2" style="font-size:12px">
+            — Upload file mới bên dưới để thay thế
+          </span>
+        </div>
+        <input type="file" id="inp-dc-tailieu-file"
+               class="form-control form-control-sm" accept=".pdf">
+        <div class="form-text">Chỉ chấp nhận file PDF, tối đa 200MB</div>
+        <input type="hidden" id="inp-dc-tailieu-url">
       </div>
     </div>
     <div class="modal-footer">
@@ -61,6 +93,23 @@
       <button class="btn btn-primary btn-sm" onclick="saveDC()">Lưu đề cương</button>
     </div>
   </div></div>
+</div>
+
+<!-- ── Modal xem PDF ── -->
+<div class="modal fade" id="modal-pdf-viewer" tabindex="-1"
+     aria-modal="true" role="dialog">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content" style="height:90vh">
+      <div class="modal-header py-2">
+        <h6 class="modal-title">📄 Xem tài liệu</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-0" style="flex:1; overflow:hidden">
+        <iframe id="pdf-viewer-frame" src="" width="100%" height="100%"
+                style="border:none; display:block; height:100%"></iframe>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="../libs/bootstrap.bundle.min.js"></script>
@@ -87,6 +136,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', async () => {
     await loadTopbar();
+    await loadSidebar();
     initDC();
   });
 </script>

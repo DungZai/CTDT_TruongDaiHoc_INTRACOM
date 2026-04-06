@@ -82,6 +82,13 @@ public class UserServiceImpl implements IUserService {
     public UserResponse update(Long id, UserUpdateRequest request) {
         Users user = findById(id);
 
+        if (request.getUsername() != null && !request.getUsername().isBlank()
+                && !request.getUsername().equals(user.getUsername())) {
+            if (userRepository.existsByUsername(request.getUsername()))
+                throw new BadRequestException("Username '" + request.getUsername() + "' đã tồn tại.");
+            user.setUsername(request.getUsername());
+        }
+
         if (request.getEmail() != null && !request.getEmail().isBlank()) {
             if (!request.getEmail().equals(user.getEmail())
                     && userRepository.existsByEmail(request.getEmail()))

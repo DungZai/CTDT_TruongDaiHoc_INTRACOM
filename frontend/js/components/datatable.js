@@ -2,21 +2,29 @@ function renderTable({ tbodyId, columns, data, actions, type }) {
   const tbody = document.getElementById(tbodyId);
   if (!tbody) return;
 
-  const role      = TokenService.getRole();
-  const isAdmin   = role === 'ADMIN';
-  const isDecuong = type === 'decuong';
+  const role       = TokenService.getRole();
+  const isAdmin    = role === 'ADMIN';
+  const isDecuong  = type === 'decuong';
+  const isGiangVien = role === 'GIANG_VIEN';
 
-  // Có hiện cột thao tác không?
-  const showAction = isAdmin || isDecuong;
+  // ADMIN: thấy tất cả thao tác
+  // GIANG_VIEN + decuong: chỉ thấy nút Sửa (đề cương)
+  // GIANG_VIEN + không phải decuong: không thấy thao tác
+  const showAction = isAdmin || (isGiangVien && isDecuong);
+  const canEdit    = isAdmin || (isGiangVien && isDecuong);
+  const canDelete  = isAdmin;
 
-  // Cập nhật header — thêm/bỏ cột Thao tác
+  // Cập nhật header
   const thead = tbody.closest('table')?.querySelector('thead tr');
   if (thead) {
     const lastTh = thead.querySelector('th:last-child');
-    if (showAction && lastTh?.textContent.trim() === '') {
-      lastTh.textContent = 'Thao tác';
-    } else if (!showAction && lastTh) {
-      lastTh.style.display = 'none';
+    if (lastTh) {
+      if (showAction) {
+        if (lastTh.textContent.trim() === '') lastTh.textContent = 'Thao tác';
+        lastTh.style.display = '';
+      } else {
+        lastTh.style.display = 'none';
+      }
     }
   }
 
@@ -26,9 +34,6 @@ function renderTable({ tbodyId, columns, data, actions, type }) {
       class="text-center py-4 text-muted">Không có dữ liệu</td></tr>`;
     return;
   }
-
-  const canEdit   = isAdmin || isDecuong;
-  const canDelete = isAdmin;
 
   tbody.innerHTML = data.map((row, i) => {
     const cells = columns.map(c =>
