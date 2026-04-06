@@ -4,7 +4,7 @@ async function initKhung() {
   const cts = await chuongTrinhApi.getAll();
   document.getElementById('sel-khung-ct').innerHTML =
     '<option value="">-- Chọn chương trình --</option>'
-    + cts.map(c => `<option value="${c.id}">${c.ten_chuong_trinh}</option>`).join('');
+    + cts.map(c => `<option value="${c.id}">${c.tenChuongTrinh}</option>`).join('');
 }
 
 async function loadKhung(ctId) {
@@ -17,25 +17,25 @@ async function loadKhung(ctId) {
 
   document.getElementById('inp-khung-mon').innerHTML =
     '<option value="">-- Chọn môn --</option>'
-    + mons.map(m => `<option value="${m.id}">${m.ma_mon} — ${m.ten_mon} (${m.tin_chi}TC)</option>`).join('');
+    + mons.map(m => `<option value="${m.id}">${m.maMon} — ${m.tenMon} (${m.tinChi}TC)</option>`).join('');
 
-  const tongTC = khung.reduce((s, k) => s + (mons.find(m => m.id === k.mon_hoc_id)?.tin_chi || 0), 0);
+  const tongTC = khung.reduce((s, k) => s + (mons.find(m => m.id === k.monHocId)?.tinChi || 0), 0);
   document.getElementById('lbl-tong-tc').textContent = `Tổng: ${tongTC} TC`;
 
   if (!khung.length) { wrap.innerHTML = '<p class="text-muted mt-3">Chưa có môn nào trong khung.</p>'; return; }
 
   const byHK = {};
-  khung.forEach(k => { (byHK[k.hoc_ky] || (byHK[k.hoc_ky] = [])).push(k); });
+  khung.forEach(k => { (byHK[k.hocKy] || (byHK[k.hocKy] = [])).push(k); });
 
   wrap.innerHTML = Object.keys(byHK).sort((a, b) => a - b).map(hk => {
     const items = byHK[hk];
-    const tcHK  = items.reduce((s, k) => s + (mons.find(m => m.id === k.mon_hoc_id)?.tin_chi || 0), 0);
-    const rows  = items.sort((a, b) => a.thu_tu - b.thu_tu).map(k => {
-      const m = mons.find(x => x.id === k.mon_hoc_id);
+    const tcHK  = items.reduce((s, k) => s + (mons.find(m => m.id === k.monHocId)?.tinChi || 0), 0);
+    const rows  = items.sort((a, b) => a.thuTu - b.thuTu).map(k => {
+      const m = mons.find(x => x.id === k.monHocId);
       return `<tr>
-        <td>${m?.ma_mon || '—'}</td><td>${m?.ten_mon || '—'}</td>
-        <td class="text-center">${m?.tin_chi || '—'}</td>
-        <td>${k.loai_mon}</td><td>${k.nhom_kien_thuc || '—'}</td>
+        <td>${m?.maMon || '—'}</td><td>${m?.tenMon || '—'}</td>
+        <td class="text-center">${m?.tinChi || '—'}</td>
+        <td>${k.loaiMon}</td><td>${k.nhomKienThuc || '—'}</td>
         <td class="text-center">
           <button class="btn btn-sm btn-warning me-1" onclick="editKhung(${k.id})">Sửa</button>
           <button class="btn btn-sm btn-danger" onclick="deleteKhung(${k.id})">Xóa</button>
@@ -62,12 +62,12 @@ function openKhung() {
 async function editKhung(id) {
   _khungEditId = id;
   const d = await khungApi.getById(id);
-  document.getElementById('inp-khung-mon').value    = d.mon_hoc_id;
-  document.getElementById('inp-khung-hk').value     = d.hoc_ky;
-  document.getElementById('inp-khung-loai').value   = d.loai_mon;
-  document.getElementById('inp-khung-nhom').value   = d.nhom_kien_thuc || '';
-  document.getElementById('inp-khung-thutu').value  = d.thu_tu || 1;
-  document.getElementById('inp-khung-ghichu').value = d.ghi_chu || '';
+  document.getElementById('inp-khung-mon').value    = d.monHocId;
+  document.getElementById('inp-khung-hk').value     = d.hocKy;
+  document.getElementById('inp-khung-loai').value   = d.loaiMon;
+  document.getElementById('inp-khung-nhom').value   = d.nhomKienThuc || '';
+  document.getElementById('inp-khung-thutu').value  = d.thuTu || 1;
+  document.getElementById('inp-khung-ghichu').value = d.ghiChu || '';
   document.getElementById('modal-khung-title').textContent = 'Sửa môn trong khung';
   Modal.open('modal-khung');
 }
@@ -76,13 +76,13 @@ async function saveKhung() {
   const monId = Number(document.getElementById('inp-khung-mon').value);
   if (!monId) { Toast.warning('Vui lòng chọn môn học.'); return; }
   const body = {
-    chuong_trinh_id: Number(_khungCtId),
-    mon_hoc_id:      monId,
-    hoc_ky:          Number(document.getElementById('inp-khung-hk').value),
-    loai_mon:        document.getElementById('inp-khung-loai').value,
-    nhom_kien_thuc:  document.getElementById('inp-khung-nhom').value,
-    thu_tu:          Number(document.getElementById('inp-khung-thutu').value) || 1,
-    ghi_chu:         document.getElementById('inp-khung-ghichu').value.trim(),
+    chuongTrinhId:  Number(_khungCtId),
+    monHocId:       monId,
+    hocKy:          Number(document.getElementById('inp-khung-hk').value),
+    loaiMon:        document.getElementById('inp-khung-loai').value,
+    nhomKienThuc:   document.getElementById('inp-khung-nhom').value,
+    thuTu:          Number(document.getElementById('inp-khung-thutu').value) || 1,
+    ghiChu:         document.getElementById('inp-khung-ghichu').value.trim(),
   };
   try {
     _khungEditId ? await khungApi.update(_khungEditId, body) : await khungApi.create(body);

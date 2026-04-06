@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="../css/table.css">
   <link rel="stylesheet" href="../css/form.css">
   <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/topbar.css">
 </head>
 <body>
 <main class="main-content">
@@ -71,6 +72,7 @@
 <script src="../js/components/modal.js"></script>
 <script src="../js/components/datatable.js"></script>
 <script src="../js/components/sidebar.js"></script>
+<script src="../js/components/topbar.js"></script>
 <script src="../js/api/client.js"></script>
 <script src="../js/api/authApi.js"></script>
 <script src="../js/api/heDaoTaoApi.js"></script>
@@ -78,6 +80,11 @@
 <script src="../js/utils/formatter.js"></script>
 <script src="../js/utils/validator.js"></script>
 <script src="../js/pages/heDaoTao.js"></script>
-<script>document.addEventListener('DOMContentLoaded', loadHe);</script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadTopbar();
+    loadHe();
+  });
+</script>
 </body>
 </html>

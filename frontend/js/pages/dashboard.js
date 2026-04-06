@@ -6,17 +6,14 @@ async function initDashboard() {
   document.getElementById('topbar-username').textContent = username || 'Admin';
   document.getElementById('topbar-role').textContent     = role || 'Quản trị viên';
 
-  // Avatar chữ cái đầu
   const avatarText = document.getElementById('topbar-avatar-text');
   if (avatarText) avatarText.textContent = (username || 'A').charAt(0).toUpperCase();
 
-  // Logout dropdown
   document.getElementById('btn-logout-top')?.addEventListener('click', e => {
     e.preventDefault();
     authApi.logout();
   });
 
-  // Toggle dropdown khi click
   document.getElementById('topbar-user-wrap')?.addEventListener('click', function(e) {
     this.classList.toggle('open');
     e.stopPropagation();
@@ -37,14 +34,14 @@ async function initDashboard() {
     });
 
   try {
-    // ── Load song song ──────────────────────────────────────
+    // ── Load song song ────────────────────────────────────
     const [nganhs, cts, mons] = await Promise.all([
       nganhApi.getAll(),
       chuongTrinhApi.getAll(),
       monHocApi.getAll(),
     ]);
 
-    // ── Stat cards ──────────────────────────────────────────
+    // ── Stat cards ────────────────────────────────────────
     const nganhActive = nganhs.filter(n => n.trangThai).length;
     document.getElementById('stat-nganh').textContent     = nganhs.length;
     document.getElementById('stat-nganh-sub').textContent = `${nganhActive} hoạt động`;
@@ -68,7 +65,7 @@ async function initDashboard() {
     document.getElementById('stat-cdr').textContent     = totalCdr;
     document.getElementById('stat-cdr-sub').textContent = `Trên ${cts.length} chương trình`;
 
-    // ── Tiến độ đề cương ────────────────────────────────────
+    // ── Tiến độ đề cương ──────────────────────────────────
     const dcArr   = await Promise.all(
       mons.map(m => deCuongApi.getByMonHoc(m.id).catch(() => null))
     );
@@ -87,26 +84,29 @@ async function initDashboard() {
     bar.style.strokeDasharray  = circ;
     bar.style.strokeDashoffset = offset;
 
-    // ── Phân bố tín chỉ ─────────────────────────────────────
+    // ── Phân bố tín chỉ ───────────────────────────────────
     if (cts.length) {
       const khung = await khungApi.getByChuongTrinh(cts[0].id).catch(() => []);
       if (Array.isArray(khung) && khung.length) {
         const nhomMap = {};
         khung.forEach(k => {
-          const nhom = k.nhomKienThuc || 'Khác';
+          const nhom = (k.nhomKienThuc || 'Khác').trim();
           nhomMap[nhom] = (nhomMap[nhom] || 0) + 1;
         });
-        const total = Object.values(nhomMap).reduce((a,b) => a+b, 0) || 1;
-        const dc  = nhomMap['Giáo dục đại cương']      || 0;
-        const cn  = nhomMap['Giáo dục chuyên nghiệp']  || 0;
-        const tt  = nhomMap['Thực tập - Đồ án']        || 0;
-        setBar('bar-dc', 'lbl-dc', dc, total);
-        setBar('bar-cn', 'lbl-cn', cn, total);
-        setBar('bar-tt', 'lbl-tt', tt, total);
+
+        const total     = Object.values(nhomMap).reduce((a, b) => a + b, 0) || 1;
+        const dacuong   = nhomMap['Đại cương']    || 0;
+        const coso      = nhomMap['Cơ sở ngành']  || 0;
+        const chuyenng  = nhomMap['Chuyên ngành'] || 0;
+        const totnghiep = nhomMap['Tốt nghiệp']   || 0;
+
+        setBar('bar-dc', 'lbl-dc', dacuong,            total);
+        setBar('bar-cn', 'lbl-cn', coso + chuyenng,    total);
+        setBar('bar-tt', 'lbl-tt', totnghiep,          total);
       }
     }
 
-    // ── Bảng CT gần đây ─────────────────────────────────────
+    // ── Bảng CT gần đây ───────────────────────────────────
     const tbody = document.getElementById('tbody-recent-ct');
     tbody.innerHTML = [...cts].slice(-5).reverse().map(c => `
       <tr>
@@ -120,7 +120,7 @@ async function initDashboard() {
       </tr>`).join('')
       || '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:16px">Chưa có dữ liệu</td></tr>';
 
-    // ── Danh sách môn học ────────────────────────────────────
+    // ── Danh sách môn học ─────────────────────────────────
     document.getElementById('list-recent-mon').innerHTML =
       [...mons].slice(-5).reverse().map(m => `
         <div class="mon-row">
@@ -131,6 +131,13 @@ async function initDashboard() {
           <span class="mon-tc">${m.tinChi} TC</span>
         </div>`).join('')
       || '<p style="color:#94a3b8;font-size:13px;text-align:center">Chưa có dữ liệu</p>';
+
+    // ── Hiện nhóm Quản trị nếu là ADMIN ──────────────────
+    if (role === 'ADMIN') {
+      document.getElementById('wrap-admin-sep').style.display   = '';
+      document.getElementById('wrap-admin-label').style.display = '';
+      document.getElementById('wrap-admin-links').style.display = '';
+    }
 
   } catch (e) {
     Toast.error('Không thể tải dữ liệu: ' + e.message);

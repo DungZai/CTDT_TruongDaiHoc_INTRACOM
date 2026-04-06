@@ -8,89 +8,11 @@
   <link rel="stylesheet" href="../css/variables.css">
   <link rel="stylesheet" href="../css/layout.css">
   <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/topbar.css">
   <style>
     * { box-sizing: border-box; }
     body { background: #f0f4ff; margin: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
 
-    /* ── TOPBAR ─────────────────────────────────── */
-    .topbar {
-      position: fixed; top: 0; left: 0; right: 0; height: 56px;
-      background: #fff; border-bottom: 1px solid #e2e8f0;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 28px; z-index: 1000;
-      box-shadow: 0 1px 8px rgba(0,0,0,.06);
-    }
-    .topbar-left { display: flex; align-items: center; gap: 12px; }
-    .topbar-logo {
-      width: 38px; height: 38px; border-radius: 10px;
-      background: linear-gradient(135deg,#2563eb,#3b82f6);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px; color: #fff; font-weight: 800; flex-shrink: 0;
-    }
-    .topbar-brand { font-size: 15px; font-weight: 700; color: #1e293b; }
-    .topbar-brand span { font-size: 12px; font-weight: 400; color: #94a3b8; display: block; }
-
-    .topbar-right { display: flex; align-items: center; gap: 6px; }
-
-    /* Avatar + dropdown */
-    .topbar-user {
-      display: flex; align-items: center; gap: 10px;
-      padding: 6px 12px; border-radius: 10px; cursor: pointer;
-      transition: background .15s; position: relative;
-      border: 1px solid transparent;
-    }
-    .topbar-user:hover { background: #f8faff; border-color: #e2e8f0; }
-    .topbar-avatar {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: linear-gradient(135deg,#2563eb,#60a5fa);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px; font-weight: 700; color: #fff;
-      border: 2px solid #bfdbfe; flex-shrink: 0;
-      overflow: hidden;
-    }
-    .topbar-avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .topbar-username { font-size: 13px; font-weight: 600; color: #1e293b; }
-    .topbar-role     { font-size: 11px; color: #94a3b8; }
-    .topbar-caret    { font-size: 10px; color: #94a3b8; margin-left: 2px; }
-
-    /* Dropdown menu */
-    .dropdown-menu-custom {
-      display: none; position: absolute; top: calc(100% + 6px); right: 0;
-      background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0,0,0,.12); min-width: 180px;
-      padding: 6px; z-index: 999; animation: fadeIn .15s ease;
-    }
-    .topbar-user:hover .dropdown-menu-custom,
-    .topbar-user.open  .dropdown-menu-custom { display: block; }
-    @keyframes fadeIn { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:translateY(0); } }
-
-    .dropdown-item-custom {
-      display: flex; align-items: center; gap: 10px;
-      padding: 9px 12px; border-radius: 8px; cursor: pointer;
-      font-size: 13px; color: #334155; font-weight: 500;
-      transition: background .12s; text-decoration: none;
-    }
-    .dropdown-item-custom:hover { background: #f0f4ff; color: #2563eb; }
-    .dropdown-item-custom.danger:hover { background: #fff1f2; color: #dc2626; }
-    .dropdown-divider-custom { height: 1px; background: #f1f5f9; margin: 4px 0; }
-
-    /* Notification bell */
-    .topbar-bell {
-      width: 38px; height: 38px; border-radius: 10px; border: 1px solid #e2e8f0;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: background .15s; position: relative;
-      background: #fff; font-size: 16px;
-    }
-    .topbar-bell:hover { background: #f0f4ff; border-color: #bfdbfe; }
-    .bell-badge {
-      position: absolute; top: -4px; right: -4px;
-      width: 16px; height: 16px; background: #ef4444;
-      border-radius: 50%; font-size: 9px; color: #fff;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700; border: 2px solid #fff;
-    }
-
-    /* ── WRAPPER ─────────────────────────────────── */
     .page-wrapper {
       max-width: 1200px; margin: 0 auto;
       padding: 72px 20px 20px;
@@ -144,7 +66,14 @@
     .dash-card-header a:hover { text-decoration: underline; }
 
     /* Quick links */
-    .quick-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 8px; }
+    .ql-section-label {
+      font-size: 10px; font-weight: 700; color: #94a3b8;
+      letter-spacing: .08em; text-transform: uppercase;
+      margin-bottom: 8px; padding-left: 2px;
+    }
+    .quick-grid-6 { display: grid; grid-template-columns: repeat(6,1fr); gap: 8px; }
+    .quick-grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+    .quick-sep    { height: 10px; }
     .quick-btn {
       display: flex; flex-direction: column; align-items: center; gap: 6px;
       padding: 12px 6px; border-radius: 10px; cursor: pointer;
@@ -181,6 +110,9 @@
     .mon-ma   { font-size: 11px; color: #94a3b8; margin-top: 2px; font-family: monospace; }
     .mon-tc   { font-size: 12px; background: #eff6ff; color: #2563eb; padding: 3px 10px; border-radius: 8px; font-weight: 700; flex-shrink: 0; }
 
+    /* Phân bố tín chỉ label */
+    .dist-bar-header span:first-child { font-size: 11px; color: #475569; font-weight: 500; }
+
     /* Right col */
     .right-col { display: flex; flex-direction: column; gap: 10px; }
     .progress-card {
@@ -207,8 +139,8 @@
     .dist-bar-bg   { height: 6px; background: #f1f5f9; border-radius: 10px; overflow: hidden; }
     .dist-bar-fill { height: 100%; border-radius: 10px; transition: width .6s ease; }
 
-    .badge-active { font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 600; background: #dcfce7; color: #15803d; }
-    .badge-hidden { font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 600; background: #f1f5f9; color: #94a3b8; }
+    .badge-active { font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 600; background: #dcfce7; color: #15803d; white-space: nowrap; }
+    .badge-hidden { font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 600; background: #f1f5f9; color: #94a3b8; white-space: nowrap; }
     .badge-nganh  { font-size: 10px; background: #eff6ff; color: #2563eb; padding: 2px 7px; border-radius: 5px; font-weight: 700; }
   </style>
 </head>
@@ -217,21 +149,17 @@
 <!-- ── TOPBAR ── -->
 <div class="topbar">
   <div class="topbar-left">
-    <div class="topbar-logo">🎓</div>
+    <a href="dashboard.html" class="topbar-logo" title="Trang chủ">🎓</a>
     <div class="topbar-brand">
       QLCTĐT
       <span>Đại học Intracom</span>
     </div>
   </div>
-
   <div class="topbar-right">
-    <!-- Chuông thông báo -->
-    <div class="topbar-bell">
+    <div class="topbar-bell" id="topbar-bell">
       🔔
-      <div class="bell-badge">3</div>
+      <div class="bell-badge" id="bell-badge" style="display:none">0</div>
     </div>
-
-    <!-- Avatar + dropdown -->
     <div class="topbar-user" id="topbar-user-wrap">
       <div class="topbar-avatar" id="topbar-avatar-wrap">
         <span id="topbar-avatar-text"></span>
@@ -241,19 +169,11 @@
         <div class="topbar-role"     id="topbar-role">—</div>
       </div>
       <span class="topbar-caret">▼</span>
-
-      <!-- Dropdown -->
       <div class="dropdown-menu-custom">
-        <a class="dropdown-item-custom" href="#">
-          👤 Thông tin cá nhân
-        </a>
-        <a class="dropdown-item-custom" href="#">
-          🔑 Đổi mật khẩu
-        </a>
+        <a class="dropdown-item-custom" href="#">👤 Thông tin cá nhân</a>
+        <a class="dropdown-item-custom" href="#">🔑 Đổi mật khẩu</a>
         <div class="dropdown-divider-custom"></div>
-        <a class="dropdown-item-custom danger" href="#" id="btn-logout-top">
-          🚪 Đăng xuất
-        </a>
+        <a class="dropdown-item-custom danger" href="#" id="btn-logout-top">🚪 Đăng xuất</a>
       </div>
     </div>
   </div>
@@ -310,20 +230,39 @@
   <!-- Quick links -->
   <div class="dash-card">
     <div class="dash-card-title">Truy cập nhanh</div>
-    <div class="quick-grid">
-      <a class="quick-btn" href="nganh.html"              style="background:#eff6ff"><span class="ql-icon">🏫</span><span class="ql-label">Ngành</span></a>
-      <a class="quick-btn" href="he-dao-tao.html"         style="background:#f0fdf4"><span class="ql-icon">🎓</span><span class="ql-label">Hệ ĐT</span></a>
-      <a class="quick-btn" href="chuong-trinh.html"       style="background:#fffbeb"><span class="ql-icon">📋</span><span class="ql-label">Chương trình</span></a>
+
+    <!-- Hàng 1: Danh mục -->
+    <div class="ql-section-label">Danh mục</div>
+    <div class="quick-grid-6">
+      <a class="quick-btn" href="nganh.html"          style="background:#eff6ff"><span class="ql-icon">🏫</span><span class="ql-label">Ngành</span></a>
+      <a class="quick-btn" href="chuyen-nganh.html"   style="background:#f0f9ff"><span class="ql-icon">🎯</span><span class="ql-label">Chuyên ngành</span></a>
+      <a class="quick-btn" href="he-dao-tao.html"     style="background:#f0fdf4"><span class="ql-icon">🎓</span><span class="ql-label">Hệ ĐT</span></a>
+      <a class="quick-btn" href="chuong-trinh.html"   style="background:#fffbeb"><span class="ql-icon">📋</span><span class="ql-label">Chương trình</span></a>
+      <a class="quick-btn" href="mon-hoc.html"        style="background:#fff1f2"><span class="ql-icon">📚</span><span class="ql-label">Môn học</span></a>
+      <a class="quick-btn" href="mon-tien-quyet.html" style="background:#fdf4ff"><span class="ql-icon">🔗</span><span class="ql-label">Môn tiên quyết</span></a>
+    </div>
+
+    <div class="quick-sep"></div>
+
+    <!-- Hàng 2: Nghiệp vụ -->
+    <div class="ql-section-label">Nghiệp vụ</div>
+    <div class="quick-grid-4">
       <a class="quick-btn" href="khung-chuong-trinh.html" style="background:#faf5ff"><span class="ql-icon">🗂️</span><span class="ql-label">Khung CT</span></a>
-      <a class="quick-btn" href="mon-hoc.html"            style="background:#fff1f2"><span class="ql-icon">📚</span><span class="ql-label">Môn học</span></a>
+      <a class="quick-btn" href="chuan-dau-ra.html"       style="background:#ecfdf5"><span class="ql-icon">🏆</span><span class="ql-label">Chuẩn đầu ra</span></a>
       <a class="quick-btn" href="de-cuong.html"           style="background:#ecfeff"><span class="ql-icon">📝</span><span class="ql-label">Đề cương</span></a>
+      <a class="quick-btn" href="ma-tran-clo.html"        style="background:#fff7ed"><span class="ql-icon">📊</span><span class="ql-label">Ma trận CLO</span></a>
+    </div>
+
+    <!-- Hàng 3: Quản trị (chỉ ADMIN) -->
+    <div class="quick-sep" id="wrap-admin-sep" style="display:none"></div>
+    <div class="ql-section-label" id="wrap-admin-label" style="display:none">Quản trị</div>
+    <div class="quick-grid-6" id="wrap-admin-links" style="display:none">
+      <a class="quick-btn" href="quan-ly-nguoi-dung.html" style="background:#fef2f2"><span class="ql-icon">👥</span><span class="ql-label">Người dùng</span></a>
     </div>
   </div>
 
   <!-- Main row -->
   <div class="main-grid">
-
-    <!-- Bảng CT -->
     <div class="dash-card">
       <div class="dash-card-header">
         <span>Chương trình đào tạo</span>
@@ -337,7 +276,6 @@
       </table>
     </div>
 
-    <!-- Môn học -->
     <div class="dash-card">
       <div class="dash-card-header">
         <span>Môn học mới nhất</span>
@@ -346,7 +284,6 @@
       <div id="list-recent-mon"></div>
     </div>
 
-    <!-- Cột phải -->
     <div class="right-col">
       <div class="progress-card">
         <div class="pc-title">Tiến độ đề cương</div>
@@ -369,28 +306,18 @@
           </div>
         </div>
       </div>
-
       <div class="dash-card" style="flex:1">
         <div class="dash-card-title">Phân bố tín chỉ</div>
         <div class="dist-bar-wrap">
-          <div class="dist-bar-header">
-            <span>Đại cương</span>
-            <span id="lbl-dc" style="color:#3b82f6">—</span>
-          </div>
+          <div class="dist-bar-header"><span>Đại cương</span><span id="lbl-dc" style="color:#3b82f6">—</span></div>
           <div class="dist-bar-bg"><div class="dist-bar-fill" id="bar-dc" style="background:#3b82f6;width:0%"></div></div>
         </div>
         <div class="dist-bar-wrap">
-          <div class="dist-bar-header">
-            <span>Chuyên nghiệp</span>
-            <span id="lbl-cn" style="color:#10b981">—</span>
-          </div>
+          <div class="dist-bar-header"><span>Chuyên nghiệp</span><span id="lbl-cn" style="color:#10b981">—</span></div>
           <div class="dist-bar-bg"><div class="dist-bar-fill" id="bar-cn" style="background:#10b981;width:0%"></div></div>
         </div>
         <div class="dist-bar-wrap">
-          <div class="dist-bar-header">
-            <span>Thực tập</span>
-            <span id="lbl-tt" style="color:#f59e0b">—</span>
-          </div>
+          <div class="dist-bar-header"><span>Thực tập</span><span id="lbl-tt" style="color:#f59e0b">—</span></div>
           <div class="dist-bar-bg"><div class="dist-bar-fill" id="bar-tt" style="background:#f59e0b;width:0%"></div></div>
         </div>
       </div>
@@ -411,6 +338,7 @@
 <script src="../js/components/modal.js"></script>
 <script src="../js/components/datatable.js"></script>
 <script src="../js/components/sidebar.js"></script>
+<script src="../js/components/topbar.js"></script>
 <script src="../js/api/client.js"></script>
 <script src="../js/api/authApi.js"></script>
 <script src="../js/api/nganhApi.js"></script>
@@ -423,6 +351,11 @@
 <script src="../js/utils/formatter.js"></script>
 <script src="../js/utils/validator.js"></script>
 <script src="../js/pages/dashboard.js"></script>
-<script>document.addEventListener('DOMContentLoaded', initDashboard);</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    initTopbar();
+    initDashboard();
+  });
+</script>
 </body>
 </html>

@@ -12,7 +12,18 @@ const TokenService = {
   getPayload() {
     try {
       const t = this.get();
-      return t ? JSON.parse(atob(t.split('.')[1])) : null;
+      if (!t) return null;
+
+      // Decode base64url → UTF-8 đúng cách (hỗ trợ tiếng Việt)
+      const base64 = t.split('.')[1]
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+      const json = decodeURIComponent(
+        atob(base64).split('').map(c =>
+          '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+        ).join('')
+      );
+      return JSON.parse(json);
     } catch { return null; }
   },
 

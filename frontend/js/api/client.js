@@ -1,59 +1,47 @@
-async function request(method, path, body = null) {
-  const headers = { 'Content-Type': 'application/json' };
-  const token   = TokenService.get();
-  if (token) headers['Authorization'] = `Bearer ${token}`;
+/**
+ * client.js — fetch wrapper, tự đính JWT và unwrap response
+ */
+const ApiClient = (() => {
 
-  const ctrl = new AbortController();
-  const tid  = setTimeout(() => ctrl.abort(), 10000);
-  Loading.show();
+  async function request(method, url, body = null) {
+    const fullUrl = url.startsWith('http') ? url : ENV.BASE_URL + url;
 
-  try {
-    const opts = { method, headers, signal: ctrl.signal };
+    const headers = { 'Content-Type': 'application/json' };
+    const token = TokenService.get?.();
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    const opts = { method, headers };
     if (body) opts.body = JSON.stringify(body);
 
-    const res = await fetch('http://localhost:8080' + path, opts);
-    clearTimeout(tid);
+    const res = await fetch(fullUrl, opts);
 
+    // Token hết hạn → về login
     if (res.status === 401) {
-      TokenService.clear();
-      window.location.href = '/frontend/pages/login.html';
+      TokenService.clear?.();
+      window.location.href = '../pages/login.html';
       return;
     }
-    if (res.status === 403) {
-      Toast.error('Bạn không có quyền thực hiện thao tác này.');
-      return null;
-    }
-    if (!res.ok) {
-      const e = await res.json().catch(() => ({}));
-      throw new Error(e.message || `Lỗi ${res.status}`);
-    }
 
+    // Một số API trả về 204 No Content (body rỗng) — đặc biệt là DELETE
     const text = await res.text();
-    if (!text) return null;
-    const json = JSON.parse(text);
+    const json = text ? JSON.parse(text) : null;
 
-    // Nếu backend dùng ApiResponse wrapper { success, message, data }
-    if (json && typeof json.success === 'boolean') {
-      if (!json.success) throw new Error(json.message || 'Có lỗi xảy ra');
-      // Trả về data nếu có, ngược lại trả về toàn bộ json
-      return json.data !== undefined ? json.data : json;
+    if (!res.ok) {
+      throw new Error(json?.message || `Lỗi ${res.status}`);
     }
 
-    // Không có wrapper (VD: RolesController) → trả về trực tiếp
-    return json;
-  } catch (err) {
-    clearTimeout(tid);
-    if (err.name === 'AbortError') throw new Error('Yêu cầu quá thời gian, vui lòng thử lại.');
-    throw err;
-  } finally {
-    Loading.hide();
+    // Tự unwrap: { success, message, data } → trả về data
+    // Nếu không có wrapper hoặc body rỗng thì trả nguyên json
+    return json?.data !== undefined ? json.data : json;
   }
-}
 
-const http = {
-  get:    path        => request('GET',    path),
-  post:   (path, b)   => request('POST',   path, b),
-  put:    (path, b)   => request('PUT',    path, b),
-  patch:  (path, b)   => request('PATCH',  path, b),
-  delete: path        => request('DELETE', path),
-};
+  return {
+    get:    (url)        => request('GET',    url),
+    post:   (url, body)  => request('POST',   url, body),
+    put:    (url, body)  => request('PUT',    url, body),
+    delete: (url)        => request('DELETE', url),
+  };
+})();
+
+// Alias để tương thích với các file *Api.js đang dùng `http`
+const http = ApiClient;

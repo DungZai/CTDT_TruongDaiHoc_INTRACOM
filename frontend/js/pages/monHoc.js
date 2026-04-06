@@ -5,12 +5,12 @@ async function loadMon() {
   renderTable({
     tbodyId: 'tbody-mon',
     columns: [
-      { key: 'ma_mon' },
-      { key: 'ten_mon' },
-      { key: 'tin_chi',    render: r => `${r.tin_chi} TC` },
-      { key: 'so_tiet_lt', render: r => r.so_tiet_lt ?? '—' },
-      { key: 'so_tiet_th', render: r => r.so_tiet_th ?? '—' },
-      { key: 'trang_thai', render: r => Formatter.trangThai(r.trang_thai) },
+      { key: 'maMon' },
+      { key: 'tenMon' },
+      { key: 'tinChi',   render: r => `${r.tinChi} TC` },
+      { key: 'soTietLt', render: r => r.soTietLt ?? '—' },
+      { key: 'soTietTh', render: r => r.soTietTh ?? '—' },
+      { key: 'trangThai', render: r => Formatter.trangThai(r.trangThai) },
     ],
     data,
     actions: { edit: 'editMon', delete: 'deleteMon' },
@@ -28,30 +28,30 @@ function openMon() {
 async function editMon(id) {
   _monEditId = id;
   const d = await monHocApi.getById(id);
-  document.getElementById('inp-ma-mon').value   = d.ma_mon;
-  document.getElementById('inp-ten-mon').value  = d.ten_mon;
-  document.getElementById('inp-mon-tc').value   = d.tin_chi;
-  document.getElementById('inp-mon-lt').value   = d.so_tiet_lt ?? '';
-  document.getElementById('inp-mon-th').value   = d.so_tiet_th ?? '';
-  document.getElementById('inp-mon-mota').value = d.mo_ta || '';
-  document.getElementById('chk-mon-tt').checked = d.trang_thai;
+  document.getElementById('inp-ma-mon').value   = d.maMon;
+  document.getElementById('inp-ten-mon').value  = d.tenMon;
+  document.getElementById('inp-mon-tc').value   = d.tinChi;
+  document.getElementById('inp-mon-lt').value   = d.soTietLt ?? '';
+  document.getElementById('inp-mon-th').value   = d.soTietTh ?? '';
+  document.getElementById('inp-mon-mota').value = d.moTa || '';
+  document.getElementById('chk-mon-tt').checked = d.trangThai;
   document.getElementById('modal-mon-title').textContent = 'Sửa môn học';
   Modal.open('modal-mon');
 }
 
 async function saveMon() {
   const body = {
-    ma_mon:     document.getElementById('inp-ma-mon').value.trim(),
-    ten_mon:    document.getElementById('inp-ten-mon').value.trim(),
-    tin_chi:    Number(document.getElementById('inp-mon-tc').value),
-    so_tiet_lt: Number(document.getElementById('inp-mon-lt').value) || 0,
-    so_tiet_th: Number(document.getElementById('inp-mon-th').value) || 0,
-    mo_ta:      document.getElementById('inp-mon-mota').value.trim(),
-    trang_thai: document.getElementById('chk-mon-tt').checked,
+    maMon:     document.getElementById('inp-ma-mon').value.trim(),
+    tenMon:    document.getElementById('inp-ten-mon').value.trim(),
+    tinChi:    Number(document.getElementById('inp-mon-tc').value),
+    soTietLt:  Number(document.getElementById('inp-mon-lt').value) || 0,
+    soTietTh:  Number(document.getElementById('inp-mon-th').value) || 0,
+    moTa:      document.getElementById('inp-mon-mota').value.trim(),
+    trangThai: document.getElementById('chk-mon-tt').checked,
   };
-  if (!Validator.required(body.ma_mon, 'Mã môn')) return;
-  if (!Validator.required(body.ten_mon, 'Tên môn')) return;
-  if (!Validator.positiveInt(body.tin_chi, 'Tín chỉ')) return;
+  if (!Validator.required(body.maMon,  'Mã môn'))  return;
+  if (!Validator.required(body.tenMon, 'Tên môn')) return;
+  if (!Validator.positiveInt(body.tinChi, 'Tín chỉ')) return;
   try {
     _monEditId ? await monHocApi.update(_monEditId, body) : await monHocApi.create(body);
     Toast.success('Lưu thành công.');

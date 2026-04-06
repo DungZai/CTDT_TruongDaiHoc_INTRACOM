@@ -2,7 +2,7 @@ let _tqAllMons = [], _tqMonId = null;
 
 async function initTQ() {
   _tqAllMons = await monHocApi.getAll();
-  const opts = _tqAllMons.map(m => `<option value="${m.id}">${m.ma_mon} — ${m.ten_mon}</option>`).join('');
+  const opts = _tqAllMons.map(m => `<option value="${m.id}">${m.maMon} — ${m.tenMon}</option>`).join('');
   document.getElementById('sel-tq-mon').innerHTML   = '<option value="">-- Chọn môn --</option>' + opts;
   document.getElementById('inp-tq-mon').innerHTML   = '<option value="">-- Môn học --</option>' + opts;
   document.getElementById('inp-tq-montq').innerHTML = '<option value="">-- Môn tiên quyết --</option>' + opts;
@@ -19,12 +19,12 @@ async function loadTQ(monId) {
     return;
   }
   tbody.innerHTML = data.map((d, i) => {
-    const mon   = _tqAllMons.find(m => m.id === d.mon_hoc_id);
-    const monTQ = _tqAllMons.find(m => m.id === d.mon_tien_quyet_id);
+    const mon   = _tqAllMons.find(m => m.id === d.monHocId);
+    const monTQ = _tqAllMons.find(m => m.id === d.monTienQuyetId);
     return `<tr>
       <td>${i + 1}</td>
-      <td>${mon?.ma_mon || '—'} — ${mon?.ten_mon || '—'}</td>
-      <td>${monTQ?.ma_mon || '—'} — ${monTQ?.ten_mon || '—'}</td>
+      <td>${mon?.maMon   || '—'} — ${mon?.tenMon   || '—'}</td>
+      <td>${monTQ?.maMon || '—'} — ${monTQ?.tenMon || '—'}</td>
       <td><button class="btn btn-sm btn-danger" onclick="deleteTQ(${d.id})">Xóa</button></td>
     </tr>`;
   }).join('');
@@ -36,7 +36,7 @@ async function saveTQ() {
   if (!monId || !monTQId) { Toast.warning('Vui lòng chọn đủ môn học và môn tiên quyết.'); return; }
   if (monId === monTQId)  { Toast.warning('Môn học và môn tiên quyết không được trùng nhau.'); return; }
   try {
-    await monHocApi.addTienQuyet({ mon_hoc_id: monId, mon_tien_quyet_id: monTQId });
+    await monHocApi.addTienQuyet({ monHocId: monId, monTienQuyetId: monTQId });
     Toast.success('Thêm thành công.');
     Modal.close('modal-tq');
     loadTQ(_tqMonId || monId);

@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vn.intracom.chuongtrinhdaotao.dto.request.RegisterRequest;
+import vn.intracom.chuongtrinhdaotao.dto.request.UserUpdateRequest;
 import vn.intracom.chuongtrinhdaotao.dto.response.JwtResponse;
 import vn.intracom.chuongtrinhdaotao.dto.response.UserResponse;
 import vn.intracom.chuongtrinhdaotao.entity.Roles;
@@ -22,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements IUserService {
 
-    private final UserRepository userRepository;
+    private final UserRepository  userRepository;
     private final RolesRepository rolesRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -50,29 +51,52 @@ public class UserServiceImpl implements IUserService {
     @Override
     @Transactional
     public void register(RegisterRequest request) {
-        if (userRepository.existsByUsername(request.getUsername())) {
+        if (userRepository.existsByUsername(request.getUsername()))
             throw new BadRequestException("Username '" + request.getUsername() + "' đã tồn tại");
-        }
-        if (userRepository.existsByEmail(request.getEmail())) {
+        if (userRepository.existsByEmail(request.getEmail()))
             throw new BadRequestException("Email '" + request.getEmail() + "' đã được sử dụng");
-        }
 
-        // Mặc định gán role USER nếu không truyền roleId
         Long roleId = request.getRoleId() != null ? request.getRoleId() : getDefaultRoleId();
-        Roles role = rolesRepository.findById(roleId)
+        Roles role  = rolesRepository.findById(roleId)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy role ID: " + roleId));
 
         Users user = Users.builder()
                 .username(request.getUsername())
-                // ✅ PRODUCTION — Bỏ comment dòng dưới khi deploy thật
-                // .password(passwordEncoder.encode(request.getPassword()))
-                // 🚧 TESTING — Lưu plain text để test
-                .password(request.getPassword())
+                .password(request.getPassword()) // TODO: encode khi deploy
                 .email(request.getEmail())
                 .role(role)
                 .createdAt(LocalDate.now())
                 .build();
         userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public UserResponse create(RegisterRequest request) {
+        register(request);
+        return getByUsername(request.getUsername());
+    }
+
+    @Override
+    @Transactional
+    public UserResponse update(Long id, UserUpdateRequest request) {
+        Users user = findById(id);
+
+        if (request.getEmail() != null && !request.getEmail().isBlank()) {
+            if (!request.getEmail().equals(user.getEmail())
+                    && userRepository.existsByEmail(request.getEmail()))
+                throw new BadRequestException("Email '" + request.getEmail() + "' đã được sử dụng.");
+            user.setEmail(request.getEmail());
+        }
+
+        if (request.getRoleId() != null) {
+            Roles role = rolesRepository.findById(request.getRoleId())
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Không tìm thấy role ID: " + request.getRoleId()));
+            user.setRole(role);
+        }
+
+        return toResponse(userRepository.save(user));
     }
 
     @Override
@@ -96,14 +120,13 @@ public class UserServiceImpl implements IUserService {
         userRepository.delete(findById(id));
     }
 
-    // ── helpers ──────────────────────────────────────────────────────────────
+    // ── Helpers ──────────────────────────────────────────────────────────────
 
     private Users findById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy user ID: " + id));
     }
 
-    // Lấy role USER mặc định (giả sử roleName = "USER")
     private Long getDefaultRoleId() {
         return rolesRepository.findByRoleName("USER")
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy role mặc định USER"))

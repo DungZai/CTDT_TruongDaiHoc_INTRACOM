@@ -4,8 +4,8 @@ async function initDC() {
   const mons = await monHocApi.getAll();
   document.getElementById('sel-dc-mon').innerHTML =
     '<option value="">-- Chọn môn học --</option>'
-    + mons.filter(m => m.trang_thai)
-          .map(m => `<option value="${m.id}">${m.ma_mon} — ${m.ten_mon}</option>`).join('');
+    + mons.filter(m => m.trangThai)
+          .map(m => `<option value="${m.id}">${m.maMon} — ${m.tenMon}</option>`).join('');
 }
 
 async function loadDC(monId) {
@@ -33,11 +33,11 @@ async function loadDC(monId) {
         <button class="btn btn-danger btn-sm" onclick="deleteDC(${dc.id})">Xóa</button>
       </div>
     </div>
-    <div class="dc-row"><span class="dc-label">Mục tiêu:</span><span>${dc.muc_tieu || '—'}</span></div>
-    <div class="dc-row"><span class="dc-label">Nội dung:</span><span>${dc.noi_dung || '—'}</span></div>
-    <div class="dc-row"><span class="dc-label">PP giảng dạy:</span><span>${dc.phuong_phap_day || '—'}</span></div>
-    <div class="dc-row"><span class="dc-label">PP đánh giá:</span><span>${dc.phuong_phap_danh_gia || '—'}</span></div>
-    <div class="dc-row"><span class="dc-label">Tài liệu:</span><span>${dc.tai_lieu || '—'}</span></div>
+    <div class="dc-row"><span class="dc-label">Mục tiêu:</span><span>${dc.mucTieu || '—'}</span></div>
+    <div class="dc-row"><span class="dc-label">Nội dung:</span><span>${dc.noiDung || '—'}</span></div>
+    <div class="dc-row"><span class="dc-label">PP giảng dạy:</span><span>${dc.phuongPhapDay || '—'}</span></div>
+    <div class="dc-row"><span class="dc-label">PP đánh giá:</span><span>${dc.phuongPhapDanhGia || '—'}</span></div>
+    <div class="dc-row"><span class="dc-label">Tài liệu:</span><span>${dc.taiLieu || '—'}</span></div>
   </div>`;
 }
 
@@ -51,27 +51,27 @@ function openDC() {
 async function openDCEdit(id) {
   _dcEditId = id;
   const d = await deCuongApi.getById(id);
-  document.getElementById('inp-dc-muctieu').value = d.muc_tieu || '';
-  document.getElementById('inp-dc-noidung').value = d.noi_dung || '';
-  document.getElementById('inp-dc-ppday').value   = d.phuong_phap_day || '';
-  document.getElementById('inp-dc-ppdg').value    = d.phuong_phap_danh_gia || '';
-  document.getElementById('inp-dc-tailieu').value = d.tai_lieu || '';
+  document.getElementById('inp-dc-muctieu').value = d.mucTieu || '';
+  document.getElementById('inp-dc-noidung').value = d.noiDung || '';
+  document.getElementById('inp-dc-ppday').value   = d.phuongPhapDay || '';
+  document.getElementById('inp-dc-ppdg').value    = d.phuongPhapDanhGia || '';
+  document.getElementById('inp-dc-tailieu').value = d.taiLieu || '';
   document.getElementById('inp-dc-version').value = d.version || '1.0';
   Modal.open('modal-dc');
 }
 
 async function saveDC() {
   const body = {
-    mon_hoc_id:           Number(_dcMonId),
-    muc_tieu:             document.getElementById('inp-dc-muctieu').value.trim(),
-    noi_dung:             document.getElementById('inp-dc-noidung').value.trim(),
-    phuong_phap_day:      document.getElementById('inp-dc-ppday').value.trim(),
-    phuong_phap_danh_gia: document.getElementById('inp-dc-ppdg').value.trim(),
-    tai_lieu:             document.getElementById('inp-dc-tailieu').value.trim(),
-    version:              document.getElementById('inp-dc-version').value.trim() || '1.0',
+    monHocId:          Number(_dcMonId),
+    mucTieu:           document.getElementById('inp-dc-muctieu').value.trim(),
+    noiDung:           document.getElementById('inp-dc-noidung').value.trim(),
+    phuongPhapDay:     document.getElementById('inp-dc-ppday').value.trim(),
+    phuongPhapDanhGia: document.getElementById('inp-dc-ppdg').value.trim(),
+    taiLieu:           document.getElementById('inp-dc-tailieu').value.trim(),
+    version:           document.getElementById('inp-dc-version').value.trim() || '1.0',
   };
-  if (!Validator.required(body.muc_tieu, 'Mục tiêu')) return;
-  if (!Validator.required(body.noi_dung, 'Nội dung')) return;
+  if (!Validator.required(body.mucTieu, 'Mục tiêu')) return;
+  if (!Validator.required(body.noiDung, 'Nội dung')) return;
   try {
     _dcEditId ? await deCuongApi.update(_dcEditId, body) : await deCuongApi.create(body);
     Toast.success('Lưu đề cương thành công.');
