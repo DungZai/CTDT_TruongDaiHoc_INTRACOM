@@ -128,4 +128,7 @@ public class KhungChuongTrinhServiceImpl implements IKhungChuongTrinhService {
                 .ghiChu(k.getGhiChu())
                 .build();
     }
+    public KhungChuongTrinhResponse getById(Long id) {
+    return toResponse(findById(id));
+}
 }

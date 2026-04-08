@@ -66,6 +66,11 @@ public class ChuongTrinhDaoTaoServiceImpl implements IChuongTrinhDaoTaoService {
         HeDaoTao he = heDaoTaoRepository.findById(request.getHeId())
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy hệ đào tạo ID: " + request.getHeId()));
 
+                if (chuongTrinhRepository.existsByTenChuongTrinhAndNganh_IdAndHeDaoTao_IdAndNamPhatHanh(
+        request.getTenChuongTrinh(), request.getNganhId(),
+        request.getHeId(), request.getNamPhatHanh())) {
+        throw new ResourceNotFoundException("Chương trình đào tạo đã tồn tại!");
+}
         ChuongTrinhDaoTao ct = ChuongTrinhDaoTao.builder()
                 .tenChuongTrinh(request.getTenChuongTrinh())
                 .nganh(nganh)
@@ -86,6 +91,12 @@ public class ChuongTrinhDaoTaoServiceImpl implements IChuongTrinhDaoTaoService {
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy ngành ID: " + request.getNganhId()));
         HeDaoTao he = heDaoTaoRepository.findById(request.getHeId())
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy hệ đào tạo ID: " + request.getHeId()));
+
+                if (chuongTrinhRepository.existsByTenChuongTrinhAndNganh_IdAndHeDaoTao_IdAndNamPhatHanhAndIdNot(
+        request.getTenChuongTrinh(), request.getNganhId(),
+        request.getHeId(), request.getNamPhatHanh(), id)) {
+        throw new ResourceNotFoundException("Chương trình đào tạo đã tồn tại!");
+}
 
         ct.setTenChuongTrinh(request.getTenChuongTrinh());
         ct.setNganh(nganh);

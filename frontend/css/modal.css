@@ -1,0 +1,129 @@
+/* ═══════════════════════════════════════
+   MODAL — Thông tin cá nhân & Đổi mật khẩu
+   ═══════════════════════════════════════ */
+
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 1100;
+  background: rgba(15,23,42,.4);
+  align-items: center; justify-content: center;
+  animation: modalFadeIn .15s ease;
+}
+.modal-overlay.show { display: flex; }
+
+@keyframes modalFadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+
+.modal-box {
+  background: #fff; border-radius: 16px;
+  border: 0.5px solid #e2e8f0;
+  box-shadow: 0 12px 40px rgba(0,0,0,.12);
+  width: 420px; max-width: calc(100vw - 32px);
+  animation: modalSlideUp .2s ease;
+}
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.modal-header {
+  padding: 18px 22px 14px; border-bottom: 1px solid #f1f5f9;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.modal-title { font-size: 14px; font-weight: 600; color: #1e293b; }
+.modal-close {
+  width: 26px; height: 26px; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: #94a3b8; border: none; background: none; font-size: 14px;
+}
+.modal-close:hover { background: #f1f5f9; color: #475569; }
+
+.modal-body   { padding: 20px 22px; }
+.modal-footer {
+  padding: 12px 22px; border-top: 1px solid #f1f5f9;
+  display: flex; justify-content: flex-end; gap: 8px;
+}
+
+/* ── Profile ── */
+.profile-top {
+  display: flex; flex-direction: column;
+  align-items: center; padding: 16px 0 14px; gap: 8px;
+}
+.profile-avatar {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; font-weight: 700; color: #fff;
+}
+.profile-name  { font-size: 16px; font-weight: 600; color: #1e293b; }
+.profile-badge {
+  display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 600; background: #dbeafe; color: #1d4ed8;
+}
+.profile-divider { height: 1px; background: #f1f5f9; margin: 4px 0 12px; }
+
+.info-row {
+  display: flex; align-items: center;
+  padding: 10px 0; border-bottom: 1px solid #f8fafc; gap: 12px;
+}
+.info-row:last-child { border-bottom: none; }
+.info-icon {
+  width: 32px; height: 32px; border-radius: 8px; background: #f0f4ff;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.info-icon svg { width: 15px; height: 15px; stroke: #2563eb; fill: none; stroke-width: 1.8; }
+.info-label { font-size: 11px; color: #94a3b8; margin-bottom: 2px; }
+.info-value { font-size: 13px; font-weight: 500; color: #1e293b; }
+
+/* ── Đổi mật khẩu ── */
+.pw-group { margin-bottom: 14px; }
+.pw-label { display: block; font-size: 12px; font-weight: 500; color: #475569; margin-bottom: 5px; }
+.pw-wrap  { position: relative; }
+.pw-input {
+  width: 100%; height: 40px;
+  border: 1px solid #e2e8f0; border-radius: 9px;
+  padding: 0 38px 0 12px;
+  font-size: 13px; color: #1e293b; background: #fff;
+  outline: none; transition: border .15s, box-shadow .15s;
+}
+.pw-input:focus { border-color: #2563eb; box-shadow: 0 0 0 3px #dbeafe; }
+
+.strength-bar {
+  height: 4px; border-radius: 2px;
+  background: #f1f5f9; margin: 6px 0 3px; overflow: hidden;
+}
+.strength-fill { height: 100%; border-radius: 2px; transition: width .3s, background .3s; }
+.strength-fill.weak   { width: 33%; background: #ef4444; }
+.strength-fill.medium { width: 66%; background: #f59e0b; }
+.strength-fill.strong { width: 100%; background: #22c55e; }
+.strength-text.weak   { color: #ef4444; font-size: 11px; }
+.strength-text.medium { color: #f59e0b; font-size: 11px; }
+.strength-text.strong { color: #22c55e; font-size: 11px; }
+
+.pw-section {
+  font-size: 10px; font-weight: 600; color: #94a3b8;
+  letter-spacing: .06em; text-transform: uppercase;
+  margin: 16px 0 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.pw-section::after { content: ''; flex: 1; height: 1px; background: #f1f5f9; }
+
+.pw-warn {
+  background: #fffbeb; border: 1px solid #fde68a;
+  border-radius: 9px; padding: 9px 12px;
+  font-size: 12px; color: #92400e; margin-top: 12px;
+}
+
+/* ── Buttons ── */
+.btn-modal-close {
+  height: 34px; padding: 0 16px; border-radius: 8px;
+  border: 1px solid #e2e8f0; background: #fff;
+  font-size: 13px; font-weight: 500; color: #64748b; cursor: pointer;
+}
+.btn-modal-close:hover { background: #f8fafc; }
+.btn-modal-save {
+  height: 34px; padding: 0 18px; border-radius: 8px;
+  border: none; background: #2563eb;
+  font-size: 13px; font-weight: 600; color: #fff; cursor: pointer;
+}
+.btn-modal-save:hover { background: #1d4ed8; }

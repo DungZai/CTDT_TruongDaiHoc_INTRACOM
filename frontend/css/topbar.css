@@ -1,93 +1,74 @@
 /* ═══════════════════════════════════════
-   TOPBAR  —  dùng chung toàn bộ app
+   TOPBAR — dùng chung toàn bộ app
    ═══════════════════════════════════════ */
 
 .topbar {
   position: fixed; top: 0; left: 0; right: 0; height: 56px;
   background: #fff; border-bottom: 1px solid #e2e8f0;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 28px; z-index: 1000;
-  box-shadow: 0 1px 8px rgba(0,0,0,.06);
+  padding: 0 20px; z-index: 1000;
+  box-shadow: 0 1px 6px rgba(0,0,0,.05);
 }
 
 /* ── Left ── */
-.topbar-left { display: flex; align-items: center; gap: 12px; }
+.topbar-left { display: flex; align-items: center; gap: 10px; }
 
 .topbar-logo {
-  width: 38px; height: 38px; border-radius: 10px;
-  background: linear-gradient(135deg,#2563eb,#3b82f6);
+  width: 36px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
   display: flex; align-items: center; justify-content: center;
-  font-size: 18px; color: #fff; font-weight: 800; flex-shrink: 0;
+  font-size: 18px; color: #fff; flex-shrink: 0;
   text-decoration: none;
 }
-/* Nút quay lại — nổi góc trái, ngay dưới topbar */
-.topbar-subbar {
-  position: fixed; top: 64px; left: 20px;
-  z-index: 999;
-}
-.topbar-subbar.hidden { display: none; }
 
-.topbar-back {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 5px 12px; border-radius: 8px;
-  border: 1px solid #e2e8f0;
-  background: #fff; color: #2563eb;
-  font-size: 12px; font-weight: 600;
-  cursor: pointer; white-space: nowrap;
-  box-shadow: 0 1px 4px rgba(0,0,0,.08);
-  transition: all .15s;
-}
-.topbar-back:hover { background: #eff6ff; border-color: #bfdbfe; }
-
-.topbar-brand { font-size: 15px; font-weight: 700; color: #1e293b; }
-.topbar-brand span { font-size: 12px; font-weight: 400; color: #94a3b8; display: block; }
+.topbar-brand { font-size: 15px; font-weight: 600; color: #1e293b; line-height: 1; }
+.topbar-brand span { font-size: 12px; font-weight: 400; color: #94a3b8; display: block; margin-top: 3px; }
 
 /* ── Right ── */
-.topbar-right { display: flex; align-items: center; gap: 6px; }
+.topbar-right { display: flex; align-items: center; gap: 8px; }
 
 /* Bell */
 .topbar-bell {
-  width: 38px; height: 38px; border-radius: 10px; border: 1px solid #e2e8f0;
+  width: 38px; height: 38px; border-radius: 9px;
+  border: 1px solid #e2e8f0;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; transition: background .15s; position: relative;
-  background: #fff; font-size: 16px;
+  background: #fff; font-size: 17px;
 }
 .topbar-bell:hover { background: #f0f4ff; border-color: #bfdbfe; }
 .bell-badge {
-  position: absolute; top: -4px; right: -4px;
-  width: 16px; height: 16px; background: #ef4444;
-  border-radius: 50%; font-size: 9px; color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700; border: 2px solid #fff;
+  position: absolute; top: 7px; right: 8px;
+  width: 7px; height: 7px; background: #ef4444;
+  border-radius: 50%; border: 1.5px solid #fff;
 }
 
 /* Avatar + dropdown */
 .topbar-user {
-  display: flex; align-items: center; gap: 10px;
+  display: flex; align-items: center; gap: 9px;
   padding: 6px 12px; border-radius: 10px; cursor: pointer;
   transition: background .15s; position: relative;
-  border: 1px solid transparent;
+  border: 1px solid #e2e8f0; background: #fff;
 }
-.topbar-user:hover { background: #f8faff; border-color: #e2e8f0; }
+.topbar-user:hover { background: #f8faff; }
 
 .topbar-avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: linear-gradient(135deg,#2563eb,#60a5fa);
+  width: 32px; height: 32px; border-radius: 50%;
+  background: #dbeafe;
   display: flex; align-items: center; justify-content: center;
-  font-size: 14px; font-weight: 700; color: #fff;
-  border: 2px solid #bfdbfe; flex-shrink: 0; overflow: hidden;
+  font-size: 13px; font-weight: 600; color: #1d4ed8;
+  flex-shrink: 0; overflow: hidden;
 }
 .topbar-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
 .topbar-username { font-size: 13px; font-weight: 600; color: #1e293b; }
-.topbar-role     { font-size: 11px; color: #94a3b8; }
+.topbar-role     { font-size: 11px; color: #94a3b8; margin-top: 2px; }
 .topbar-caret    { font-size: 10px; color: #94a3b8; margin-left: 2px; }
 
 /* Dropdown */
 .dropdown-menu-custom {
   display: none; position: absolute; top: calc(100% + 6px); right: 0;
   background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0,0,0,.12); min-width: 180px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.10); min-width: 190px;
   padding: 6px; z-index: 999; animation: fadeIn .15s ease;
 }
 .topbar-user:hover .dropdown-menu-custom,
@@ -100,10 +81,28 @@
 
 .dropdown-item-custom {
   display: flex; align-items: center; gap: 10px;
-  padding: 9px 12px; border-radius: 8px; cursor: pointer;
+  padding: 10px 13px; border-radius: 8px; cursor: pointer;
   font-size: 13px; color: #334155; font-weight: 500;
   transition: background .12s; text-decoration: none;
 }
-.dropdown-item-custom:hover       { background: #f0f4ff; color: #2563eb; }
+.dropdown-item-custom:hover        { background: #f0f4ff; color: #2563eb; }
 .dropdown-item-custom.danger:hover { background: #fff1f2; color: #dc2626; }
 .dropdown-divider-custom { height: 1px; background: #f1f5f9; margin: 4px 0; }
+
+/* Nút quay lại */
+.topbar-subbar {
+  position: fixed; top: 64px; left: 20px; z-index: 999;
+}
+.topbar-subbar.hidden { display: none; }
+
+.topbar-back {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 6px 13px; border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #fff; color: #2563eb;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer; white-space: nowrap;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  transition: all .15s;
+}
+.topbar-back:hover { background: #eff6ff; border-color: #bfdbfe; }

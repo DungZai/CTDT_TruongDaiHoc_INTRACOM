@@ -77,4 +77,10 @@ public class KhungChuongTrinhController {
         khungService.delete(id);
         return ResponseEntity.ok(ApiResponse.success("Xóa thành công", null));
     }
+    
+    @Operation(summary = "Lấy khung theo ID")
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<KhungChuongTrinhResponse>> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.success(khungService.getById(id)));
+}
 }

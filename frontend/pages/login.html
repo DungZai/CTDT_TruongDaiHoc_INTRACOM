@@ -7,27 +7,102 @@
   <link rel="stylesheet" href="../css/variables.css">
   <link rel="stylesheet" href="../css/form.css">
   <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/login.css">
 </head>
 <body>
 <div class="login-page">
-  <div class="login-card">
-    <div class="login-logo">
-      <div class="logo-icon"><span>🎓</span></div>
-      <h4>Quản lý chương trình đào tạo</h4>
-      <p>Đại học Intracom</p>
+
+  <!-- Cột trái -->
+  <div class="login-left">
+    <div class="login-left-circle c1"></div>
+    <div class="login-left-circle c2"></div>
+    <div class="login-left-circle c3"></div>
+    <div class="login-left-circle c4"></div>
+    <canvas id="login-canvas"></canvas>
+
+    <div class="login-left-content">
+      <div class="login-left-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <div style="text-align:center">
+        <div class="login-left-title">Quản lý chương trình<br>đào tạo</div>
+        <div class="login-left-sub">Đại học Intracom</div>
+      </div>
+      <div class="login-left-divider"></div>
+      <div class="login-left-desc">Hệ thống quản lý nội bộ dành cho giảng viên và quản trị viên</div>
+      <div class="login-left-badges">
+        <span class="login-badge">📋 Chương trình</span>
+        <span class="login-badge">📚 Môn học</span>
+        <span class="login-badge">🏆 Chuẩn đầu ra</span>
+        <span class="login-badge">📊 Ma trận CLO</span>
+      </div>
     </div>
-    <form id="form-login">
-      <div class="mb-3">
-        <label class="form-label">Tài khoản</label>
-        <input type="text" id="username" class="form-control" placeholder="Nhập username" autofocus>
-      </div>
-      <div class="mb-4">
-        <label class="form-label">Mật khẩu</label>
-        <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu">
-      </div>
-      <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
-    </form>
   </div>
+
+  <!-- Cột phải -->
+  <div class="login-right">
+
+    <!-- Topbar logo -->
+    <div class="login-right-topbar">
+      <div class="login-right-topbar-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <div>
+        <div class="login-right-topbar-name">QLCTĐT</div>
+        <div class="login-right-topbar-sub">Đại học Intracom</div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="login-right-body">
+      <div class="login-right-title">Chào mừng trở lại</div>
+      <div class="login-right-sub">Đăng nhập để tiếp tục</div>
+
+      <div class="login-form-wrap">
+        <form id="form-login">
+          <div class="mb-3">
+            <label class="form-label">Tài khoản</label>
+            <div class="login-input-wrap">
+              <span class="login-input-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </span>
+              <input type="text" id="username" class="form-control login-input" placeholder="Nhập tài khoản" autofocus>
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="form-label">Mật khẩu</label>
+            <div class="login-input-wrap">
+              <span class="login-input-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <rect x="3" y="11" width="18" height="11" rx="2"/>
+                  <path d="M7 11V7a5 5 0 0110 0v4"/>
+                </svg>
+              </span>
+              <input type="password" id="password" class="form-control login-input has-eye" placeholder="Nhập mật khẩu">
+              <button id="btn-toggle-pw" type="button"
+                style="position:absolute;right:11px;top:50%;transform:translateY(-50%);background:none;border:none;outline:none;box-shadow:none;cursor:pointer;display:flex;color:#cbd5e1;padding:4px;transition:color .15s">
+                <svg id="eye-icon" viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary w-100 login-btn">Đăng nhập</button>
+        </form>
+        <div class="login-footer">Hệ thống quản lý nội bộ · Đại học Intracom</div>
+      </div>
+    </div>
+
+  </div>
+
 </div>
 <script src="../libs/bootstrap.bundle.min.js"></script>
 <script src="../libs/sweetalert2.all.min.js"></script>
@@ -39,6 +114,73 @@
 <script src="../js/api/client.js"></script>
 <script src="../js/api/authApi.js"></script>
 <script src="../js/pages/login.js"></script>
-<script>document.addEventListener('DOMContentLoaded', initLogin);</script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  initLogin();
+
+  // ── Show/hide mật khẩu ──
+  const pw   = document.getElementById('password');
+  const btn  = document.getElementById('btn-toggle-pw');
+  const icon = document.getElementById('eye-icon');
+  const eyeOpen = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+  const eyeOff  = '<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>';
+  btn.addEventListener('click', () => {
+    const show = pw.type === 'password';
+    pw.type = show ? 'text' : 'password';
+    icon.innerHTML = show ? eyeOff : eyeOpen;
+    btn.style.color = show ? '#64748b' : '#cbd5e1';
+  });
+
+  // ── Particles animation ──
+  const cv  = document.getElementById('login-canvas');
+  const ctx = cv.getContext('2d');
+  const par = cv.parentElement;
+
+  function resize() { cv.width = par.offsetWidth; cv.height = par.offsetHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const dots = Array.from({length: 36}, () => ({
+    x: Math.random() * cv.width,
+    y: Math.random() * cv.height,
+    r: Math.random() * 2 + 1,
+    vx: (Math.random() - .5) * .4,
+    vy: (Math.random() - .5) * .4,
+    a: Math.random() * .4 + .1
+  }));
+
+  function draw() {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    dots.forEach(d => {
+      d.x += d.vx; d.y += d.vy;
+      if (d.x < 0) d.x = cv.width;
+      if (d.x > cv.width) d.x = 0;
+      if (d.y < 0) d.y = cv.height;
+      if (d.y > cv.height) d.y = 0;
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${d.a})`;
+      ctx.fill();
+    });
+    for (let i = 0; i < dots.length; i++) {
+      for (let j = i + 1; j < dots.length; j++) {
+        const dx = dots[i].x - dots[j].x;
+        const dy = dots[i].y - dots[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 90) {
+          ctx.beginPath();
+          ctx.moveTo(dots[i].x, dots[i].y);
+          ctx.lineTo(dots[j].x, dots[j].y);
+          ctx.strokeStyle = `rgba(255,255,255,${.12 * (1 - dist / 90)})`;
+          ctx.lineWidth = .8;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+});
+</script>
 </body>
 </html>

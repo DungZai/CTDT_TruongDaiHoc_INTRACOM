@@ -29,4 +29,13 @@ public interface ChuongTrinhDaoTaoRepository extends JpaRepository<ChuongTrinhDa
     // Tìm kiếm theo tên (LIKE)
     @Query("SELECT c FROM ChuongTrinhDaoTao c WHERE c.tenChuongTrinh LIKE %:keyword%")
     List<ChuongTrinhDaoTao> searchByTen(@Param("keyword") String keyword);
+
+    // ChuongTrinhDaoTaoRepository.java
+boolean existsByTenChuongTrinhAndNganh_IdAndHeDaoTao_IdAndNamPhatHanh(
+    String tenChuongTrinh, Long nganhId, Long heId, Integer namPhatHanh
+);
+
+boolean existsByTenChuongTrinhAndNganh_IdAndHeDaoTao_IdAndNamPhatHanhAndIdNot(
+    String tenChuongTrinh, Long nganhId, Long heId, Integer namPhatHanh, Long id
+);
 }

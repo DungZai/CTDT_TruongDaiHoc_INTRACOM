@@ -96,13 +96,13 @@ async function initDashboard() {
 
         const total     = Object.values(nhomMap).reduce((a, b) => a + b, 0) || 1;
         const dacuong   = nhomMap['Đại cương']    || 0;
-        const coso      = nhomMap['Cơ sở ngành']  || 0;
+        const thuhanh      = nhomMap['Thực hành']  || 0;
         const chuyenng  = nhomMap['Chuyên ngành'] || 0;
-        const totnghiep = nhomMap['Tốt nghiệp']   || 0;
+       // const totnghiep = nhomMap['Tốt nghiệp']   || 0;
 
-        setBar('bar-dc', 'lbl-dc', dacuong,            total);
-        setBar('bar-cn', 'lbl-cn', coso + chuyenng,    total);
-        setBar('bar-tt', 'lbl-tt', totnghiep,          total);
+        setBar('bar-dc', 'lbl-dc', dacuong,    total);
+        setBar('bar-cn', 'lbl-cn', thuhanh,    total);
+        setBar('bar-tt', 'lbl-tt', chuyenng  , total);
       }
     }
 
