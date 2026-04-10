@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/topbar.css">
   <link rel="stylesheet" href="../css/sidebar.css">
+  <link rel="stylesheet" href="../css/modal.css">
 </head>
 <body>
 <main class="main-content">
@@ -21,8 +22,8 @@
   <div class="filter-bar">
     <select id="sel-cdr-ct" class="form-select form-select-sm" style="width:280px"
       onchange="loadCDR(this.value)"></select>
-    <input type="text" id="inp-search-cdr" class="form-control form-control-sm" style="width:200px"
-      placeholder="Tìm kiếm..." oninput="filterTable('inp-search-cdr','tbody-cdr')">
+    <input type="search" id="inp-search-cdr" class="form-control form-control-sm" style="width:200px"
+      placeholder="Tìm kiếm..." oninput="filterTable('inp-search-cdr','tbody-cdr')" autocomplete="off">
   </div>
   <div class="table-responsive">
     <table class="table table-hover">
@@ -81,6 +82,7 @@
 <script src="../js/utils/formatter.js"></script>
 <script src="../js/utils/validator.js"></script>
 <script src="../js/pages/chuanDauRa.js"></script>
+
 <script>
   document.addEventListener('DOMContentLoaded', async () => {
     await loadTopbar();

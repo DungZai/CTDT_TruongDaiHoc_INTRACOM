@@ -17,8 +17,9 @@ import vn.intracom.chuongtrinhdaotao.dto.response.ApiResponse;
 import vn.intracom.chuongtrinhdaotao.dto.response.JwtResponse;
 import vn.intracom.chuongtrinhdaotao.security.JwtTokenProvider;
 import vn.intracom.chuongtrinhdaotao.service.IUserService;
-
 import vn.intracom.chuongtrinhdaotao.service.OtpService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import vn.intracom.chuongtrinhdaotao.dto.request.ChangePasswordRequest;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -67,4 +68,13 @@ public class AuthController {
         otpService.clearOtp(request.getEmail()); // Xóa OTP sau khi đăng ký thành công
         return ResponseEntity.ok(ApiResponse.success("Đăng ký thành công", null));
     }
+
+    @Operation(summary = "Đổi mật khẩu")
+    @PutMapping("/change-password")
+    public ResponseEntity<ApiResponse<Void>> changePassword(
+        @AuthenticationPrincipal UserDetails userDetails,
+        @RequestBody ChangePasswordRequest request) {
+        userService.changePassword(userDetails.getUsername(), request.getCurrentPassword(), request.getNewPassword());
+        return ResponseEntity.ok(ApiResponse.success("Đổi mật khẩu thành công", null));
+}
 }

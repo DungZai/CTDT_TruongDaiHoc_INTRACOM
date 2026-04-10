@@ -69,3 +69,6 @@
   margin-bottom: 14px;
   align-items: center;
 }
+.toast-on-top {
+  z-index: 99999 !important;
+}

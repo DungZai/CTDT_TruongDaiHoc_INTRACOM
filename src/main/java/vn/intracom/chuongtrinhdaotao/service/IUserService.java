@@ -16,4 +16,5 @@ public interface IUserService {
     UserResponse update(Long id, UserUpdateRequest request);
     JwtResponse buildJwtResponse(String username, String token);
     void delete(Long id);
+    void changePassword(String username, String currentPassword, String newPassword);
 }

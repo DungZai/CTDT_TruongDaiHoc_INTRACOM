@@ -8,18 +8,24 @@ const ApiClient = (() => {
 
     const headers = { 'Content-Type': 'application/json' };
     const token = TokenService.get?.();
-    if (token) headers['Authorization'] = `Bearer ${token}`;
+    
+    // ✅ Không gửi token cho auth endpoints
+    if (token && !url.includes('/api/auth/')) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
 
     const opts = { method, headers };
     if (body) opts.body = JSON.stringify(body);
 
     const res = await fetch(fullUrl, opts);
 
-    // Token hết hạn → về login
+    // ✅ Chỉ redirect khi không phải auth endpoint
     if (res.status === 401) {
-      TokenService.clear?.();
-      window.location.href = '../pages/login.html';
-      return;
+      if (!url.includes('/api/auth/')) {
+        TokenService.clear?.();
+        window.location.href = '../pages/login.html';
+        return;
+      }
     }
 
     // Một số API trả về 204 No Content (body rỗng) — đặc biệt là DELETE

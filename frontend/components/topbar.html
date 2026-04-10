@@ -11,7 +11,7 @@
   <div class="topbar-right">
     <div class="topbar-bell" id="topbar-bell">
       🔔
-      <div class="bell-badge" id="bell-badge" style="display:none">0</div>
+      <div class="bell-badge" id="bell-badge" style="display:none"></div>
     </div>
 
     <div class="topbar-user" id="topbar-user-wrap">
@@ -25,8 +25,8 @@
       <span class="topbar-caret">▼</span>
 
       <div class="dropdown-menu-custom">
-        <a class="dropdown-item-custom" href="#">👤 Thông tin cá nhân</a>
-        <a class="dropdown-item-custom" href="#">🔑 Đổi mật khẩu</a>
+        <a class="dropdown-item-custom" href="#" onclick="event.preventDefault(); openProfileModal()">👤 Thông tin cá nhân</a>
+        <a class="dropdown-item-custom" href="#" onclick="event.preventDefault(); openModal('modal-change-pw')">🔑 Đổi mật khẩu</a>
         <div class="dropdown-divider-custom"></div>
         <a class="dropdown-item-custom danger" href="#" id="btn-logout-top">🚪 Đăng xuất</a>
       </div>

@@ -149,4 +149,18 @@ public class UserServiceImpl implements IUserService {
                 .createdAt(u.getCreatedAt())
                 .build();
     }
+
+    @Override
+@Transactional
+public void changePassword(String username, String currentPassword, String newPassword) {
+    Users user = userRepository.findByUsername(username)
+            .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy user: " + username));
+
+    if (!passwordEncoder.matches(currentPassword, user.getPassword()))
+        throw new BadRequestException("Mật khẩu hiện tại không đúng");
+
+    user.setPassword(passwordEncoder.encode(newPassword));
+    userRepository.save(user);
+}
+
 }

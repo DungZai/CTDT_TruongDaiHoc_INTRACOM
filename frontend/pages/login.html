@@ -10,8 +10,8 @@
   <link rel="stylesheet" href="../css/login.css">
 </head>
 <body>
-<div class="login-page">
 
+<div class="login-page">
   <!-- Cột trái -->
   <div class="login-left">
     <div class="login-left-circle c1"></div>
@@ -19,7 +19,6 @@
     <div class="login-left-circle c3"></div>
     <div class="login-left-circle c4"></div>
     <canvas id="login-canvas"></canvas>
-
     <div class="login-left-content">
       <div class="login-left-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
@@ -43,8 +42,6 @@
 
   <!-- Cột phải -->
   <div class="login-right">
-
-    <!-- Topbar logo -->
     <div class="login-right-topbar">
       <div class="login-right-topbar-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
@@ -57,13 +54,11 @@
       </div>
     </div>
 
-    <!-- Form -->
     <div class="login-right-body">
       <div class="login-right-title">Chào mừng trở lại</div>
       <div class="login-right-sub">Đăng nhập để tiếp tục</div>
-
       <div class="login-form-wrap">
-        <form id="form-login">
+        <form id="form-login" onsubmit="handleLogin(event)">
           <div class="mb-3">
             <label class="form-label">Tài khoản</label>
             <div class="login-input-wrap">
@@ -73,7 +68,7 @@
                   <circle cx="12" cy="7" r="4"/>
                 </svg>
               </span>
-              <input type="text" id="username" class="form-control login-input" placeholder="Nhập tài khoản" autofocus>
+              <input type="text" id="username" class="form-control login-input" placeholder="Nhập tài khoản" autofocus autocomplete="off">
             </div>
           </div>
           <div class="mb-4">
@@ -85,7 +80,7 @@
                   <path d="M7 11V7a5 5 0 0110 0v4"/>
                 </svg>
               </span>
-              <input type="password" id="password" class="form-control login-input has-eye" placeholder="Nhập mật khẩu">
+              <input type="password" id="password" class="form-control login-input has-eye" placeholder="Nhập mật khẩu" autocomplete="current-password">
               <button id="btn-toggle-pw" type="button"
                 style="position:absolute;right:11px;top:50%;transform:translateY(-50%);background:none;border:none;outline:none;box-shadow:none;cursor:pointer;display:flex;color:#cbd5e1;padding:4px;transition:color .15s">
                 <svg id="eye-icon" viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8">
@@ -100,10 +95,9 @@
         <div class="login-footer">Hệ thống quản lý nội bộ · Đại học Intracom</div>
       </div>
     </div>
-
   </div>
-
 </div>
+
 <script src="../libs/bootstrap.bundle.min.js"></script>
 <script src="../libs/sweetalert2.all.min.js"></script>
 <script src="../js/config.js"></script>
@@ -116,8 +110,6 @@
 <script src="../js/pages/login.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  initLogin();
-
   // ── Show/hide mật khẩu ──
   const pw   = document.getElementById('password');
   const btn  = document.getElementById('btn-toggle-pw');
@@ -162,6 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.fillStyle = `rgba(255,255,255,${d.a})`;
       ctx.fill();
     });
+    
     for (let i = 0; i < dots.length; i++) {
       for (let j = i + 1; j < dots.length; j++) {
         const dx = dots[i].x - dots[j].x;
@@ -181,6 +174,30 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   draw();
 });
+
+</script>
+<script>
+async function handleLogin(e) {
+  e.preventDefault();
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value;
+  if (!username || !password) { Toast.warning('Vui lòng nhập đầy đủ thông tin.'); return; }
+  
+  const btn = document.querySelector('.login-btn');
+  btn.disabled = true;
+  btn.textContent = 'Đang đăng nhập...';
+  
+  try {
+    const res = await authApi.login(username, password);
+    console.log('Login success:', res); // ✅ thêm
+    window.location.href = '/frontend/pages/dashboard.html';
+  } catch (err) {
+    console.log('Login error:', err); // ✅ thêm
+    Toast.error('Tài khoản hoặc mật khẩu không đúng.');
+    btn.disabled = false;
+    btn.textContent = 'Đăng nhập';
+  }
+}
 </script>
 </body>
 </html>
