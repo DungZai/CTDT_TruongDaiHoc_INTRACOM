@@ -1,12 +1,15 @@
 package vn.intracom.chuongtrinhdaotao.service.impl;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vn.intracom.chuongtrinhdaotao.dto.request.RegisterRequest;
 import vn.intracom.chuongtrinhdaotao.dto.request.UserUpdateRequest;
 import vn.intracom.chuongtrinhdaotao.dto.response.JwtResponse;
+import vn.intracom.chuongtrinhdaotao.dto.response.PageResponse;
 import vn.intracom.chuongtrinhdaotao.dto.response.UserResponse;
 import vn.intracom.chuongtrinhdaotao.entity.Roles;
 import vn.intracom.chuongtrinhdaotao.entity.Users;
@@ -15,6 +18,9 @@ import vn.intracom.chuongtrinhdaotao.exception.ResourceNotFoundException;
 import vn.intracom.chuongtrinhdaotao.repository.RolesRepository;
 import vn.intracom.chuongtrinhdaotao.repository.UserRepository;
 import vn.intracom.chuongtrinhdaotao.service.IUserService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,10 +35,13 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserResponse> getAll() {
-        return userRepository.findAll()
-                .stream().map(this::toResponse).toList();
-    }
+    public PageResponse<UserResponse> getAll(String keyword, int page, int size) {
+    Pageable pageable = PageRequest.of(page, size, Sort.by("username").ascending());
+    return PageResponse.of(
+            userRepository.search(keyword, pageable)
+                          .map(this::toResponse)
+    );
+}
 
     @Override
     @Transactional(readOnly = true)

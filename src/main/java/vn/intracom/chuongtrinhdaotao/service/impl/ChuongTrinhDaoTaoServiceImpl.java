@@ -32,6 +32,13 @@ public class ChuongTrinhDaoTaoServiceImpl implements IChuongTrinhDaoTaoService {
     }
 
     @Override
+@Transactional(readOnly = true)
+public List<ChuongTrinhDaoTaoResponse> getAllForSelect() {
+    return chuongTrinhRepository.findByTrangThai(true)
+            .stream().map(this::toResponse).toList();
+}
+
+    @Override
     @Transactional(readOnly = true)
     public ChuongTrinhDaoTaoResponse getById(Long id) {
         return toResponse(findById(id));

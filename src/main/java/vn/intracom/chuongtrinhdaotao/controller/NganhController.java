@@ -27,6 +27,12 @@ public class NganhController {
     public ResponseEntity<ApiResponse<List<NganhResponse>>> getAll() {
         return ResponseEntity.ok(ApiResponse.success(nganhService.getAll()));
     }
+    
+    @Operation(summary = "Lấy ngành đang hoạt động (dùng cho dropdown)")
+@GetMapping("/select")
+public ResponseEntity<ApiResponse<List<NganhResponse>>> getAllForSelect() {
+    return ResponseEntity.ok(ApiResponse.success(nganhService.getAllForSelect()));
+}
 
     @Operation(summary = "Lấy ngành theo ID")
     @GetMapping("/{id}")

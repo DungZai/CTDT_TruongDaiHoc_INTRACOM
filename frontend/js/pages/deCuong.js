@@ -14,7 +14,7 @@ function _getModalDC() {
 }
 
 async function initDC() {
-  const mons = await monHocApi.getAll();
+  const mons = await monHocApi.getAllForSelect();
   document.getElementById('sel-dc-mon').innerHTML =
     '<option value="">-- Chọn môn học --</option>'
     + mons.filter(m => m.trangThai)

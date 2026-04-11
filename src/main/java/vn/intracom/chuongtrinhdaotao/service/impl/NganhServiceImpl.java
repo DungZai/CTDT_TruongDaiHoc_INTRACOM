@@ -26,6 +26,14 @@ public class NganhServiceImpl implements INganhService {
                 .stream().map(this::toResponse).toList();
     }
 
+
+    @Override
+@Transactional(readOnly = true)
+public List<NganhResponse> getAllForSelect() {
+    return nganhRepository.findByTrangThai(true)
+            .stream().map(this::toResponse).toList();
+}
+
     @Override
     @Transactional(readOnly = true)
     public NganhResponse getById(Long id) {

@@ -72,3 +72,33 @@
 .toast-on-top {
   z-index: 99999 !important;
 }
+
+/* ── Ma trận CLO — Tab học kỳ ── */
+.mt-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mt-tab {
+  padding: 5px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  background: #fff;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all .15s;
+}
+
+.mt-tab:hover {
+  border-color: #6366f1;
+  color: #6366f1;
+}
+
+.mt-tab.active {
+  background: #6366f1;
+  border-color: #6366f1;
+  color: #fff;
+}

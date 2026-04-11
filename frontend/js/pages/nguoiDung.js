@@ -1,17 +1,24 @@
 let _userEditId = null, _userRoles = [], _bsModal = null;
 
-async function loadUsers() {
-  _userRoles = await userApi.getRoles();
+window._userKeyword = '';
 
-  // Chỉ hiện ADMIN và GIANG_VIEN
-  const allowed = ['ADMIN', 'GIANG_VIEN'];
-  document.getElementById('inp-user-role').innerHTML =
-    '<option value="">-- Chọn vai trò --</option>'
-    + _userRoles
-        .filter(r => allowed.includes(r.roleName))
-        .map(r => `<option value="${r.id}">${r.roleName}</option>`).join('');
+async function loadUsers(page = 0, size = 10) {
+  // Load roles 1 lần
+  if (!_userRoles.length) {
+    _userRoles = await userApi.getRoles();
+    const allowed = ['ADMIN', 'GIANG_VIEN'];
+    document.getElementById('inp-user-role').innerHTML =
+      '<option value="">-- Chọn vai trò --</option>'
+      + _userRoles
+          .filter(r => allowed.includes(r.roleName))
+          .map(r => `<option value="${r.id}">${r.roleName}</option>`).join('');
+  }
 
-  const users = await userApi.getAll();
+  const params = new URLSearchParams({ page, size });
+  if (window._userKeyword) params.append('keyword', window._userKeyword);
+
+  const res = await userApi.getAll(params.toString());
+
   renderTable({
     tbodyId: 'tbody-users',
     columns: [
@@ -22,11 +29,13 @@ async function loadUsers() {
           : '—' },
       { key: 'createdAt', render: r => Formatter.date(r.createdAt) },
     ],
-    data: users,
-    actions: { edit: 'editUser', delete: 'deleteUser' },
+    data:       res.content,
+    actions:    { edit: 'editUser', delete: 'deleteUser' },
+    pageOffset: res.page * res.size,
   });
-}
 
+  Pagination.update('pagination-users', res);
+}
 function _getModal() {
   if (!_bsModal) _bsModal = new bootstrap.Modal(document.getElementById('modal-user'));
   return _bsModal;
@@ -77,7 +86,7 @@ async function saveUser() {
     }
     Toast.success('Lưu thành công.');
     _getModal().hide();
-    loadUsers();
+    loadUsers(Pagination.getPage('pagination-users'), Pagination.getSize('pagination-users'));
   } catch (e) { Toast.error(e.message); }
 }
 
@@ -86,6 +95,7 @@ async function deleteUser(id) {
   try {
     await userApi.delete(id);
     Toast.success('Xóa thành công.');
-    loadUsers();
+    const cur = Pagination.getPage('pagination-users');
+    loadUsers(cur > 0 ? cur - 1 : 0, Pagination.getSize('pagination-users'));
   } catch (e) { Toast.error(e.message); }
 }

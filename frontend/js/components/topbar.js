@@ -80,7 +80,7 @@ function _getInitial(name) {
 
 function _formatRole(role) {
   const map = {
-    ADMIN      : 'Quản trị viên',
+    ADMIN      : 'ADMIN',
     GIANG_VIEN : 'Giảng viên',
   };
   return map[role] ?? role;

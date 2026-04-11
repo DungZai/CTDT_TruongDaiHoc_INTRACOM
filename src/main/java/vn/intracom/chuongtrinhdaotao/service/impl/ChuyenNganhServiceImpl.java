@@ -1,16 +1,21 @@
 package vn.intracom.chuongtrinhdaotao.service.impl;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vn.intracom.chuongtrinhdaotao.dto.request.ChuyenNganhRequest;
 import vn.intracom.chuongtrinhdaotao.dto.response.ChuyenNganhResponse;
+import vn.intracom.chuongtrinhdaotao.dto.response.PageResponse;
 import vn.intracom.chuongtrinhdaotao.entity.ChuyenNganh;
 import vn.intracom.chuongtrinhdaotao.entity.Nganh;
 import vn.intracom.chuongtrinhdaotao.exception.ResourceNotFoundException;
 import vn.intracom.chuongtrinhdaotao.repository.ChuyenNganhRepository;
 import vn.intracom.chuongtrinhdaotao.repository.NganhRepository;
 import vn.intracom.chuongtrinhdaotao.service.IChuyenNganhService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -21,12 +26,23 @@ public class ChuyenNganhServiceImpl implements IChuyenNganhService {
     private final ChuyenNganhRepository chuyenNganhRepository;
     private final NganhRepository nganhRepository;
 
+
     @Override
-    @Transactional(readOnly = true)
-    public List<ChuyenNganhResponse> getAll() {
-        return chuyenNganhRepository.findAll()
-                .stream().map(this::toResponse).toList();
-    }
+@Transactional(readOnly = true)
+public List<ChuyenNganhResponse> getAllForSelect() {
+    return chuyenNganhRepository.findByTrangThai(true)
+            .stream().map(this::toResponse).toList();
+}
+
+    @Override
+@Transactional(readOnly = true)
+public PageResponse<ChuyenNganhResponse> getAll(String keyword, Long nganhId, int page, int size) {
+    Pageable pageable = PageRequest.of(page, size, Sort.by("tenChuyenNganh").ascending());
+    return PageResponse.of(
+            chuyenNganhRepository.search(keyword, nganhId, pageable)
+                                 .map(this::toResponse)
+    );
+}
 
     @Override
     @Transactional(readOnly = true)

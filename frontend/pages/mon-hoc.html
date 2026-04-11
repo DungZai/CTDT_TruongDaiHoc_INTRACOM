@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="../css/topbar.css">
   <link rel="stylesheet" href="../css/sidebar.css">
   <link rel="stylesheet" href="../css/modal.css">
+  <link rel="stylesheet" href="../css/pagination.css">
 </head>
 <body>
 <main class="main-content">
@@ -21,14 +22,29 @@
   </div>
   <div class="filter-bar">
     <input type="text" id="inp-search-mon" class="form-control form-control-sm" style="width:280px"
-      placeholder="Tìm mã môn, tên môn..." oninput="filterTable('inp-search-mon','tbody-mon')">
+      placeholder="Tìm mã môn, tên môn...">
+    <!-- Xóa oninput="filterTable(...)" — giờ search qua API -->
   </div>
   <div class="table-responsive">
     <table class="table table-hover">
-      <thead><tr><th>#</th><th>Mã môn</th><th>Tên môn học</th><th>Tín chỉ</th><th>Tiết LT</th><th>Tiết TH</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Mã môn</th>
+          <th>Tên môn học</th>
+          <th>Tín chỉ</th>
+          <th>Tiết LT</th>
+          <th>Tiết TH</th>
+          <th>Trạng thái</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
       <tbody id="tbody-mon"></tbody>
     </table>
   </div>
+
+  <!-- Phân trang -->
+  <div id="pagination-mon"></div>
 </main>
 
 <div class="modal fade" id="modal-mon" tabindex="-1">
@@ -87,6 +103,7 @@
 <script src="../js/components/confirm.js"></script>
 <script src="../js/components/modal.js"></script>
 <script src="../js/components/datatable.js"></script>
+<script src="../js/components/pagination.js"></script>
 <script src="../js/components/sidebar.js"></script>
 <script src="../js/components/topbar.js"></script>
 <script src="../js/api/client.js"></script>
@@ -95,13 +112,25 @@
 <script src="../js/utils/constants.js"></script>
 <script src="../js/utils/formatter.js"></script>
 <script src="../js/utils/validator.js"></script>
+<script src="../js/utils/helpers.js"></script>
 <script src="../js/pages/monHoc.js"></script>
 
 <script>
   document.addEventListener('DOMContentLoaded', async () => {
     await loadTopbar();
     await loadSidebar();
-    loadMon();
+
+    // Khởi tạo pagination
+    Pagination.init('pagination-mon', (page, size) => loadMon(page, size));
+
+    // Tìm kiếm debounce 400ms
+    document.getElementById('inp-search-mon')
+      ?.addEventListener('input', debounce(e => {
+        window._monKeyword = e.target.value.trim();
+        loadMon(0, Pagination.getSize('pagination-mon'));
+      }, 400));
+
+    loadMon(0, 10);
   });
 </script>
 </body>

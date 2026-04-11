@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface IChuongTrinhDaoTaoService {
     List<ChuongTrinhDaoTaoResponse> getAll();
+    List<ChuongTrinhDaoTaoResponse> getAllForSelect();
     ChuongTrinhDaoTaoResponse getById(Long id);
     List<ChuongTrinhDaoTaoResponse> getByNganh(Long nganhId);
     List<ChuongTrinhDaoTaoResponse> getByHe(Long heId);

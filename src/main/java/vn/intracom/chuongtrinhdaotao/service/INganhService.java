@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface INganhService {
     List<NganhResponse> getAll();
+    List<NganhResponse> getAllForSelect();
     NganhResponse getById(Long id);
     List<NganhResponse> getByTrangThai(Boolean trangThai);
     NganhResponse create(NganhRequest request);

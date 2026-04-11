@@ -1,7 +1,7 @@
 let _tqAllMons = [], _tqMonId = null, _bsModalTQ = null;
 
 async function initTQ() {
-  _tqAllMons = await monHocApi.getAll();
+  _tqAllMons = await monHocApi.getAllForSelect();
   const opts = _tqAllMons.map(m =>
     `<option value="${m.id}">${m.maMon} — ${m.tenMon}</option>`).join('');
   document.getElementById('sel-tq-mon').innerHTML   = '<option value="">-- Chọn môn học --</option>' + opts;

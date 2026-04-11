@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="../css/topbar.css">
   <link rel="stylesheet" href="../css/sidebar.css">
   <link rel="stylesheet" href="../css/modal.css">
+  <link rel="stylesheet" href="../css/pagination.css">
 </head>
 <body>
 <main class="main-content">
@@ -20,10 +21,9 @@
     <button class="btn btn-primary btn-sm" onclick="openCN()" data-role="ADMIN">+ Thêm</button>
   </div>
   <div class="filter-bar">
-    <select id="sel-cn-nganh-filter" class="form-select form-select-sm" style="width:200px"
-      onchange="filterCN()"></select>
+    <select id="sel-cn-nganh-filter" class="form-select form-select-sm" style="width:200px"></select>
     <input type="text" id="inp-search-cn" class="form-control form-control-sm" style="width:220px"
-      placeholder="Tìm kiếm..." autocomplete="off" oninput="filterCN()">
+      placeholder="Tìm kiếm..." autocomplete="off">
   </div>
   <div class="table-responsive">
     <table class="table table-hover">
@@ -31,6 +31,9 @@
       <tbody id="tbody-cn"></tbody>
     </table>
   </div>
+
+  <!-- Phân trang -->
+  <div id="pagination-cn"></div>
 </main>
 
 <div class="modal fade" id="modal-cn" tabindex="-1">
@@ -75,6 +78,7 @@
 <script src="../js/components/confirm.js"></script>
 <script src="../js/components/modal.js"></script>
 <script src="../js/components/datatable.js"></script>
+<script src="../js/components/pagination.js"></script>
 <script src="../js/components/sidebar.js"></script>
 <script src="../js/components/topbar.js"></script>
 <script src="../js/api/client.js"></script>
@@ -84,13 +88,32 @@
 <script src="../js/utils/constants.js"></script>
 <script src="../js/utils/formatter.js"></script>
 <script src="../js/utils/validator.js"></script>
+<script src="../js/utils/helpers.js"></script>
 <script src="../js/pages/chuyenNganh.js"></script>
 
 <script>
   document.addEventListener('DOMContentLoaded', async () => {
     await loadTopbar();
     await loadSidebar();
-    loadCN();
+
+    // Khởi tạo pagination
+    Pagination.init('pagination-cn', (page, size) => loadCN(page, size));
+
+    // Filter theo ngành
+    document.getElementById('sel-cn-nganh-filter')
+      ?.addEventListener('change', e => {
+        window._cnNganhId = e.target.value || null;
+        loadCN(0, Pagination.getSize('pagination-cn'));
+      });
+
+    // Tìm kiếm debounce 400ms
+    document.getElementById('inp-search-cn')
+      ?.addEventListener('input', debounce(e => {
+        window._cnKeyword = e.target.value.trim();
+        loadCN(0, Pagination.getSize('pagination-cn'));
+      }, 400));
+
+    loadCN(0, 10);
   });
 </script>
 </body>

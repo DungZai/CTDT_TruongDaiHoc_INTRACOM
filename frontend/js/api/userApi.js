@@ -1,6 +1,6 @@
 const userApi = {
   getMe:    ()        => http.get('/api/users/me'),
-  getAll:   ()        => http.get('/api/users'),
+  getAll:   (params = '') => http.get(`/api/users${params ? '?' + params : ''}`), // ← sửa
   getById:  id        => http.get(`/api/users/${id}`),
   create:   body      => http.post('/api/users', body),
   update:   (id, b)   => http.put(`/api/users/${id}`, b),

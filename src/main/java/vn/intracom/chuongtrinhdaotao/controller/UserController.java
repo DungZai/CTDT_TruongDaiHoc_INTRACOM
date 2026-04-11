@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.*;
 import vn.intracom.chuongtrinhdaotao.dto.request.RegisterRequest;
 import vn.intracom.chuongtrinhdaotao.dto.request.UserUpdateRequest;
 import vn.intracom.chuongtrinhdaotao.dto.response.ApiResponse;
+import vn.intracom.chuongtrinhdaotao.dto.response.PageResponse;
 import vn.intracom.chuongtrinhdaotao.dto.response.UserResponse;
 import vn.intracom.chuongtrinhdaotao.service.IUserService;
 
-import java.util.List;
+
+
 
 @RestController
 @RequestMapping("/api/users")
@@ -34,12 +36,17 @@ public class UserController {
                 userService.getByUsername(userDetails.getUsername())));
     }
 
-    @Operation(summary = "Lấy tất cả người dùng")
-    @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<ApiResponse<List<UserResponse>>> getAll() {
-        return ResponseEntity.ok(ApiResponse.success(userService.getAll()));
-    }
+    @Operation(summary = "Lấy danh sách người dùng (có phân trang)")
+   @GetMapping
+@PreAuthorize("hasAuthority('ADMIN')")
+public ResponseEntity<ApiResponse<PageResponse<UserResponse>>> getAll(
+        @RequestParam(required = false) String keyword,
+        @RequestParam(defaultValue = "0")  int page,
+        @RequestParam(defaultValue = "10") int size) {
+    return ResponseEntity.ok(
+            ApiResponse.success(userService.getAll(keyword, page, size))
+    );
+}
 
     @Operation(summary = "Lấy người dùng theo ID")
     @GetMapping("/{id}")

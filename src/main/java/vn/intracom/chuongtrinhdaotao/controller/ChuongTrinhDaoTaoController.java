@@ -30,6 +30,12 @@ public class ChuongTrinhDaoTaoController {
         return ResponseEntity.ok(ApiResponse.success(chuongTrinhService.getAll()));
     }
 
+    @Operation(summary = "Lấy chương trình đang hoạt động (dùng cho dropdown)")
+@GetMapping("/select")
+public ResponseEntity<ApiResponse<List<ChuongTrinhDaoTaoResponse>>> getAllForSelect() {
+    return ResponseEntity.ok(ApiResponse.success(chuongTrinhService.getAllForSelect()));
+}
+
     @Operation(summary = "Lấy chương trình theo ID")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<ChuongTrinhDaoTaoResponse>> getById(@PathVariable Long id) {

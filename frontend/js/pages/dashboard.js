@@ -38,7 +38,7 @@ async function initDashboard() {
     const [nganhs, cts, mons] = await Promise.all([
       nganhApi.getAll(),
       chuongTrinhApi.getAll(),
-      monHocApi.getAll(),
+      monHocApi.getAllForSelect(),
     ]);
 
     // ── Stat cards ────────────────────────────────────────
@@ -84,27 +84,31 @@ async function initDashboard() {
     bar.style.strokeDasharray  = circ;
     bar.style.strokeDashoffset = offset;
 
-    // ── Phân bố tín chỉ ───────────────────────────────────
-    if (cts.length) {
-      const khung = await khungApi.getByChuongTrinh(cts[0].id).catch(() => []);
-      if (Array.isArray(khung) && khung.length) {
-        const nhomMap = {};
-        khung.forEach(k => {
-          const nhom = (k.nhomKienThuc || 'Khác').trim();
-          nhomMap[nhom] = (nhomMap[nhom] || 0) + 1;
-        });
+ // ── Phân bố tín chỉ ───────────────────────────────────
+if (cts.length) {
+  const khung = await khungApi.getByChuongTrinh(cts[0].id).catch(() => []);
+  if (Array.isArray(khung) && khung.length) {
+    const nhomMap = {};
+    khung.forEach(k => {
+      const nhom = (k.nhomKienThuc || 'Khác').trim();
+      nhomMap[nhom] = (nhomMap[nhom] || 0) + 1;
+    });
 
-        const total     = Object.values(nhomMap).reduce((a, b) => a + b, 0) || 1;
-        const dacuong   = nhomMap['Đại cương']    || 0;
-        const thuhanh      = nhomMap['Thực hành']  || 0;
-        const chuyenng  = nhomMap['Chuyên ngành'] || 0;
-       // const totnghiep = nhomMap['Tốt nghiệp']   || 0;
+    const total      = Object.values(nhomMap).reduce((a, b) => a + b, 0) || 1;
+    const dacuong    = nhomMap['Đại cương']    || 0;
+    const cosonganh  = nhomMap['Cơ sở ngành'] || 0; // ← thêm
+    const chuyenng   = nhomMap['Chuyên ngành'] || 0;
+    const thuhanh    = nhomMap['Thực hành']    || 0;
+    const totnghiep  = nhomMap['Tốt nghiệp']   || 0; // ← bỏ comment
 
-        setBar('bar-dc', 'lbl-dc', dacuong,    total);
-        setBar('bar-cn', 'lbl-cn', thuhanh,    total);
-        setBar('bar-tt', 'lbl-tt', chuyenng  , total);
-      }
-    }
+    setBar('bar-dc', 'lbl-dc', dacuong,    total);
+    setBar('bar-cs', 'lbl-cs', cosonganh,  total);
+    setBar('bar-tt', 'lbl-tt', chuyenng,   total);
+    setBar('bar-cn', 'lbl-cn', thuhanh,    total);
+    setBar('bar-tn', 'lbl-tn', totnghiep,  total);
+  }
+}
+    
 
     // ── Bảng CT gần đây ───────────────────────────────────
     const tbody = document.getElementById('tbody-recent-ct');

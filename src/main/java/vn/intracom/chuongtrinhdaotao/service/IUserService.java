@@ -3,12 +3,12 @@ package vn.intracom.chuongtrinhdaotao.service;
 import vn.intracom.chuongtrinhdaotao.dto.request.RegisterRequest;
 import vn.intracom.chuongtrinhdaotao.dto.request.UserUpdateRequest;
 import vn.intracom.chuongtrinhdaotao.dto.response.JwtResponse;
+import vn.intracom.chuongtrinhdaotao.dto.response.PageResponse;
 import vn.intracom.chuongtrinhdaotao.dto.response.UserResponse;
 
-import java.util.List;
 
 public interface IUserService {
-    List<UserResponse> getAll();
+    PageResponse<UserResponse> getAll(String keyword, int page, int size); 
     UserResponse getById(Long id);
     UserResponse getByUsername(String username);
     void register(RegisterRequest request);

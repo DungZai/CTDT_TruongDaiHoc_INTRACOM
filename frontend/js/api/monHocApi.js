@@ -1,5 +1,10 @@
 const monHocApi = {
-  getAll:           ()        => http.get('/api/mon-hoc'),
+  // Phân trang + tìm kiếm: page, size, keyword
+  getAll: (params = '') => http.get(`/api/mon-hoc${params ? '?' + params : ''}`),
+
+  // Dùng cho dropdown (không phân trang)
+  getAllForSelect: () => http.get('/api/mon-hoc/select'),
+
   getActive:        ()        => http.get('/api/mon-hoc/active'),
   getById:          id        => http.get(`/api/mon-hoc/${id}`),
   search:           keyword   => http.get(`/api/mon-hoc/search?keyword=${encodeURIComponent(keyword)}`),

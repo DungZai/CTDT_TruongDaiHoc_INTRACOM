@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import vn.intracom.chuongtrinhdaotao.dto.request.ChuyenNganhRequest;
 import vn.intracom.chuongtrinhdaotao.dto.response.ApiResponse;
 import vn.intracom.chuongtrinhdaotao.dto.response.ChuyenNganhResponse;
+import vn.intracom.chuongtrinhdaotao.dto.response.PageResponse;
 import vn.intracom.chuongtrinhdaotao.service.IChuyenNganhService;
 
 import java.util.List;
@@ -22,11 +23,24 @@ public class ChuyenNganhController {
 
     private final IChuyenNganhService chuyenNganhService;
 
-    @Operation(summary = "Lấy tất cả chuyên ngành")
-    @GetMapping
-    public ResponseEntity<ApiResponse<List<ChuyenNganhResponse>>> getAll() {
-        return ResponseEntity.ok(ApiResponse.success(chuyenNganhService.getAll()));
-    }
+
+    @Operation(summary = "Lấy danh sách chuyên ngành (có phân trang)")
+@GetMapping
+public ResponseEntity<ApiResponse<PageResponse<ChuyenNganhResponse>>> getAll(
+        @RequestParam(required = false) String keyword,
+        @RequestParam(required = false) Long nganhId,
+        @RequestParam(defaultValue = "0")  int page,
+        @RequestParam(defaultValue = "10") int size) {
+    return ResponseEntity.ok(
+            ApiResponse.success(chuyenNganhService.getAll(keyword, nganhId, page, size))
+    );
+}
+
+@Operation(summary = "Lấy chuyên ngành đang hoạt động (dùng cho dropdown)")
+@GetMapping("/select")
+public ResponseEntity<ApiResponse<List<ChuyenNganhResponse>>> getAllForSelect() {
+    return ResponseEntity.ok(ApiResponse.success(chuyenNganhService.getAllForSelect()));
+}
 
     @Operation(summary = "Lấy chuyên ngành theo ID")
     @GetMapping("/{id}")
