@@ -3,9 +3,7 @@ async function loadSidebar() {
     const res = await fetch('/frontend/partials/sidebar.html');
     if (!res.ok) throw new Error('Không tải được sidebar');
     const html = await res.text();
-    const container = document.createElement('div');
-    container.innerHTML = html;
-    document.body.insertBefore(container, document.body.firstChild);
+    document.body.insertAdjacentHTML('afterbegin', html); // ✅ dòng duy nhất
   } catch (err) {
     console.error('[Sidebar]', err);
     return;
@@ -93,7 +91,7 @@ function loadModals() {
   document.body.appendChild(el);
 }
 
-document.addEventListener('DOMContentLoaded', loadModals);
+
 
 function _initSidebar() {
   const sb = document.getElementById('sidebar');
@@ -152,4 +150,4 @@ function _formatRoleSb(role) {
   return map[role] ?? role;
 }
 
-loadModals();
+document.addEventListener('DOMContentLoaded', loadModals);
