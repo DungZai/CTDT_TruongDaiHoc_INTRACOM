@@ -1,10 +1,15 @@
-function openModal(id)  { document.getElementById(id)?.classList.add('show'); }
-function closeModal(id) { document.getElementById(id)?.classList.remove('show'); }
+function openModal(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  bootstrap.Modal.getOrCreateInstance(el).show();
+}
 
-document.addEventListener('click', e => {
-  if (e.target.classList.contains('modal-overlay'))
-    e.target.classList.remove('show');
-});
+function closeModal(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  bootstrap.Modal.getInstance(el)?.hide();
+}
+
 
 function openProfileModal() {
   const user    = JSON.parse(localStorage.getItem('userInfo') || '{}');
@@ -86,3 +91,31 @@ async function submitChangePw() {
     Toast.error(err.message || 'Đổi mật khẩu thất bại.');
   }
 }
+
+// Object Modal — wrapper để các trang gọi Modal.open / Modal.close / Modal.reset
+const Modal = {
+  open(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    bootstrap.Modal.getOrCreateInstance(el).show();
+  },
+  close(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    bootstrap.Modal.getInstance(el)?.hide();
+  },
+  reset(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.querySelectorAll('input, textarea, select').forEach(f => {
+      if (f.type === 'checkbox' || f.type === 'radio') f.checked = false;
+      else f.value = '';
+    });
+  }
+};
+
+// Fix aria-hidden warning — blur focus trước khi Bootstrap đóng modal
+document.addEventListener('hide.bs.modal', e => {
+  const focused = e.target.querySelector(':focus');
+  if (focused) focused.blur();
+});
