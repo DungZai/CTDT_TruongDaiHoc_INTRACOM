@@ -14,7 +14,6 @@ public class JwtConfig {
     @Value("${app.jwt.expiration-ms}")
     private long expirationMs;
 
-    // Tính thời gian hết hạn theo giây (dùng cho cookie hoặc response nếu cần)
     public long getExpirationSeconds() {
         return expirationMs / 1000;
     }

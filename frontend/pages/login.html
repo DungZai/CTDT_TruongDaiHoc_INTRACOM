@@ -179,23 +179,44 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
 async function handleLogin(e) {
   e.preventDefault();
+  
   const username = document.getElementById('username').value.trim();
   const password = document.getElementById('password').value;
-  if (!username || !password) { Toast.warning('Vui lòng nhập đầy đủ thông tin.'); return; }
+  
+  if (!username || !password) { 
+    Toast.warning('Vui lòng nhập đầy đủ thông tin.'); 
+    return; 
+  }
   
   const btn = document.querySelector('.login-btn');
+  const originalText = btn.textContent;
   btn.disabled = true;
   btn.textContent = 'Đang đăng nhập...';
   
   try {
-    const res = await authApi.login(username, password);
-    console.log('Login success:', res); // ✅ thêm
-    window.location.href = '/frontend/pages/dashboard.html';
+    // ✅ Gọi authApi.login
+    const userData = await authApi.login(username, password);
+    
+    console.log('✅ Login success:', userData);
+    
+    // ✅ Hiển thị toast thành công
+    Toast.success('Đăng nhập thành công!');
+    
+    // ✅ Redirect sau 500ms
+    setTimeout(() => {
+      window.location.href = '/frontend/pages/dashboard.html';
+    }, 500);
+    
   } catch (err) {
-    console.log('Login error:', err); // ✅ thêm
-    Toast.error('Tài khoản hoặc mật khẩu không đúng.');
+    console.error('❌ Login error:', err);
+    
+    // ✅ Hiển thị lỗi cụ thể
+    const errorMsg = err.message || 'Tài khoản hoặc mật khẩu không đúng.';
+    Toast.error(errorMsg);
+    
+    // ✅ Reset button
     btn.disabled = false;
-    btn.textContent = 'Đăng nhập';
+    btn.textContent = originalText;
   }
 }
 </script>

@@ -36,6 +36,9 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<JwtResponse>> login(
             @Valid @RequestBody LoginRequest request) {
+                
+                   System.out.println("=== LOGIN REQUEST: " + request.getUsername() + " / " + request.getPassword() + " ===");
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(), request.getPassword()));
@@ -44,29 +47,6 @@ public class AuthController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         JwtResponse jwtResponse = userService.buildJwtResponse(userDetails.getUsername(), token);
         return ResponseEntity.ok(ApiResponse.success("Đăng nhập thành công", jwtResponse));
-    }
-
-    @Operation(summary = "Gửi OTP về email trước khi đăng ký")
-    @PostMapping("/send-otp")
-    public ResponseEntity<ApiResponse<Void>> sendOtp(@RequestParam String email) {
-        otpService.sendOtp(email);
-        return ResponseEntity.ok(ApiResponse.success("Đã gửi OTP về email " + email, null));
-    }
-
-    @Operation(summary = "Đăng ký tài khoản — cần xác thực OTP")
-    @PostMapping("/register")
-    public ResponseEntity<ApiResponse<Void>> register(
-            @Valid @RequestBody RegisterRequest request) {
-
-        // Xác thực OTP
-        if (!otpService.verifyOtp(request.getEmail(), request.getOtp())) {
-            return ResponseEntity.badRequest()
-                    .body(ApiResponse.error("Mã OTP không đúng hoặc đã hết hạn"));
-        }
-
-        userService.register(request);
-        otpService.clearOtp(request.getEmail()); // Xóa OTP sau khi đăng ký thành công
-        return ResponseEntity.ok(ApiResponse.success("Đăng ký thành công", null));
     }
 
     @Operation(summary = "Đổi mật khẩu")

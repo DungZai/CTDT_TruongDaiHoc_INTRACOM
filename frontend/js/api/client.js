@@ -7,38 +7,56 @@ const ApiClient = (() => {
     const fullUrl = url.startsWith('http') ? url : ENV.BASE_URL + url;
 
     const headers = { 'Content-Type': 'application/json' };
-    const token = TokenService.get?.();
+    const token = TokenService.get();
     
-    // ✅ Không gửi token cho auth endpoints
-    if (token && !url.includes('/api/auth/')) {
+    // ✅ ĐÚNG - Chỉ bỏ qua token cho login/register, VẪN GỬI cho change-password
+    const publicEndpoints = ['/api/auth/login', '/api/auth/register'];
+    const isPublic = publicEndpoints.some(endpoint => url.includes(endpoint));
+    
+    if (token && !isPublic) {
       headers['Authorization'] = `Bearer ${token}`;
     }
 
-    const opts = { method, headers };
+    const opts = { 
+      method, 
+      headers,
+      credentials: 'include'
+    };
+    
     if (body) opts.body = JSON.stringify(body);
 
-    const res = await fetch(fullUrl, opts);
+    try {
+      const res = await fetch(fullUrl, opts);
 
-    // ✅ Chỉ redirect khi không phải auth endpoint
-    if (res.status === 401) {
-      if (!url.includes('/api/auth/')) {
+      // ✅ Xử lý 401 Unauthorized
+      if (res.status === 401) {
+        console.warn('Token không hợp lệ hoặc hết hạn');
         TokenService.clear?.();
-        window.location.href = '../pages/login.html';
-        return;
+        
+        // Chỉ redirect nếu không phải trang login
+        if (!window.location.pathname.includes('login.html')) {
+          window.location.href = '/frontend/pages/login.html';
+        }
+        throw new Error('Unauthorized');
       }
+
+      // ✅ Xử lý response rỗng (204 No Content)
+      const text = await res.text();
+      const json = text ? JSON.parse(text) : null;
+
+      // ✅ Xử lý lỗi
+      if (!res.ok) {
+        const errorMsg = json?.message || json?.error || `Lỗi ${res.status}`;
+        throw new Error(errorMsg);
+      }
+
+      // ✅ Unwrap response: { success, message, data } → data
+      return json?.data !== undefined ? json.data : json;
+      
+    } catch (error) {
+      console.error(`API Error [${method} ${url}]:`, error);
+      throw error;
     }
-
-    // Một số API trả về 204 No Content (body rỗng) — đặc biệt là DELETE
-    const text = await res.text();
-    const json = text ? JSON.parse(text) : null;
-
-    if (!res.ok) {
-      throw new Error(json?.message || `Lỗi ${res.status}`);
-    }
-
-    // Tự unwrap: { success, message, data } → trả về data
-    // Nếu không có wrapper hoặc body rỗng thì trả nguyên json
-    return json?.data !== undefined ? json.data : json;
   }
 
   return {
@@ -46,8 +64,8 @@ const ApiClient = (() => {
     post:   (url, body)  => request('POST',   url, body),
     put:    (url, body)  => request('PUT',    url, body),
     delete: (url)        => request('DELETE', url),
+    patch:  (url, body)  => request('PATCH',  url, body),
   };
 })();
 
-// Alias để tương thích với các file *Api.js đang dùng `http`
 const http = ApiClient;

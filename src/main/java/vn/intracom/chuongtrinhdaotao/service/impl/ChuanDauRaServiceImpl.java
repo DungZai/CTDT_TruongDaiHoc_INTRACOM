@@ -74,7 +74,6 @@ public class ChuanDauRaServiceImpl implements IChuanDauRaService {
         chuanDauRaRepository.delete(findById(id));
     }
 
-    // ── helpers ──────────────────────────────────────────────────────────────
 
     private ChuanDauRa findById(Long id) {
         return chuanDauRaRepository.findById(id)

@@ -3,6 +3,7 @@ package vn.intracom.chuongtrinhdaotao.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vn.intracom.chuongtrinhdaotao.entity.Users;
@@ -23,11 +24,23 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(
                         "Không tìm thấy người dùng: " + username));
 
-        // ✅ Bỏ prefix "ROLE_" — dùng hasAuthority() thay hasRole()
-        // DB lưu "ADMIN" → authority = "ADMIN" → hasAuthority("ADMIN") ✅
+
+                          // ✅ THÊM log này
+    System.out.println("=== DEBUG ===");
+    System.out.println("Username: " + user.getUsername());
+    System.out.println("Password từ DB: " + user.getPassword());
+    System.out.println("Password length: " + user.getPassword().length());
+    System.out.println("=============");
+
+
         List<SimpleGrantedAuthority> authorities = List.of(
                 new SimpleGrantedAuthority(user.getRole().getRoleName().toUpperCase())
         );
+
+        // Thêm tạm vào cuối loadUserByUsername, trước return
+BCryptPasswordEncoder testEncoder = new BCryptPasswordEncoder();
+boolean matches = testEncoder.matches("123456", user.getPassword());
+System.out.println("=== BCrypt test match: " + matches + " ===");
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),

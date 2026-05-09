@@ -71,7 +71,7 @@ public class UserServiceImpl implements IUserService {
 
         Users user = Users.builder()
                 .username(request.getUsername())
-                .password(request.getPassword()) // TODO: encode khi deploy
+                .password(passwordEncoder.encode(request.getPassword()))
                 .email(request.getEmail())
                 .role(role)
                 .createdAt(LocalDate.now())

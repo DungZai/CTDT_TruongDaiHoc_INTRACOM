@@ -80,15 +80,37 @@ async function submitChangePw() {
   const current = document.getElementById('pw-current').value.trim();
   const newPw   = document.getElementById('pw-new').value.trim();
   const confirm = document.getElementById('pw-confirm').value.trim();
-  if (!current || !newPw || !confirm) return Toast.warning('Vui lòng nhập đầy đủ thông tin.');
-  if (newPw.length < 8) return Toast.warning('Mật khẩu mới phải ít nhất 8 ký tự.');
-  if (newPw !== confirm) return Toast.warning('Mật khẩu xác nhận không khớp.');
+  
+  if (!current || !newPw || !confirm) {
+    return Toast.warning('Vui lòng nhập đầy đủ thông tin.');
+  }
+  
+  if (newPw.length < 8) {
+    return Toast.warning('Mật khẩu mới phải ít nhất 8 ký tự.');
+  }
+  
+  if (newPw !== confirm) {
+    return Toast.warning('Mật khẩu xác nhận không khớp.');
+  }
+  
   try {
-    await authApi.changePassword({ currentPassword: current, newPassword: newPw });
+    // ✅ ĐÚNG - Gửi 2 tham số riêng biệt
+    await authApi.changePassword(current, newPw);
+    //                          ↑ param 1  ↑ param 2
+    
     Toast.success('Đổi mật khẩu thành công!');
     closeModal('modal-change-pw');
-    ['pw-current', 'pw-new', 'pw-confirm'].forEach(id => document.getElementById(id).value = '');
+    
+    // Reset form
+    ['pw-current', 'pw-new', 'pw-confirm'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+    
+    // Reset strength indicator
+    checkStrength('');
+    
   } catch (err) {
+    console.error('Change password error:', err);
     Toast.error(err.message || 'Đổi mật khẩu thất bại.');
   }
 }

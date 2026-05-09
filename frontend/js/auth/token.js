@@ -49,4 +49,5 @@ const TokenService = {
   clear() {
     sessionStorage.removeItem(this.KEY);
   }
+
 };
