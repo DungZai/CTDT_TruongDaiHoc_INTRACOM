@@ -6,4 +6,5 @@ const userApi = {
   update:   (id, b)   => http.put(`/api/users/${id}`, b),
   delete:   id        => http.delete(`/api/users/${id}`),
   getRoles: ()        => http.get('/api/roles'),
+  resetPassword: (id, data) => http.patch(`/api/users/${id}/reset-password`, data),
 };

@@ -1,6 +1,6 @@
 async function loadSidebar() {
   try {
-    const res = await fetch('/frontend/partials/sidebar.html');
+    const res = await fetch('/partials/sidebar.html');
     if (!res.ok) throw new Error('Không tải được sidebar');
     const html = await res.text();
     document.body.insertAdjacentHTML('afterbegin', html); // ✅ dòng duy nhất

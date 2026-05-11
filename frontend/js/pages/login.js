@@ -1,5 +1,5 @@
 if (TokenService.isValid()) {
-  window.location.href = '/frontend/pages/dashboard.html';
+  window.location.href = '/pages/dashboard.html';
 }
 
 async function handleLogin(e) {
@@ -9,7 +9,7 @@ async function handleLogin(e) {
   if (!username || !password) { Toast.warning('Vui lòng nhập đầy đủ thông tin.'); return; }
   try {
     await authApi.login(username, password);
-    window.location.href = '/frontend/pages/dashboard.html';
+    window.location.href = '/pages/dashboard.html';
   } catch (err) {
     Toast.error('Tài khoản hoặc mật khẩu không đúng.');
   }

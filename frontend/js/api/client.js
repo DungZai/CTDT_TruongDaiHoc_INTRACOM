@@ -1,6 +1,4 @@
-/**
- * client.js — fetch wrapper, tự đính JWT và unwrap response
- */
+
 const ApiClient = (() => {
 
   async function request(method, url, body = null) {
@@ -9,7 +7,7 @@ const ApiClient = (() => {
     const headers = { 'Content-Type': 'application/json' };
     const token = TokenService.get();
     
-    // ✅ ĐÚNG - Chỉ bỏ qua token cho login/register, VẪN GỬI cho change-password
+    //  ĐÚNG - Chỉ bỏ qua token cho login/register, VẪN GỬI cho change-password
     const publicEndpoints = ['/api/auth/login', '/api/auth/register'];
     const isPublic = publicEndpoints.some(endpoint => url.includes(endpoint));
     
@@ -35,7 +33,7 @@ const ApiClient = (() => {
         
         // Chỉ redirect nếu không phải trang login
         if (!window.location.pathname.includes('login.html')) {
-          window.location.href = '/frontend/pages/login.html';
+          window.location.href = '/pages/login.html';
         }
         throw new Error('Unauthorized');
       }

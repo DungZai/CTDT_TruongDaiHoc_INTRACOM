@@ -61,7 +61,7 @@ const authApi = (() => {
     if (typeof localStorage !== 'undefined') {
       localStorage.removeItem('user');
     }
-    window.location.href = '/frontend/pages/login.html';
+    window.location.href = '/pages/login.html';
   }
 
   /**

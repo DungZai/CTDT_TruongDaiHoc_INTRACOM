@@ -36,6 +36,7 @@ async function loadUsers(page = 0, size = 10) {
 
   Pagination.update('pagination-users', res);
 }
+
 function _getModal() {
   if (!_bsModal) _bsModal = new bootstrap.Modal(document.getElementById('modal-user'));
   return _bsModal;
@@ -48,7 +49,13 @@ function openUser() {
   document.getElementById('inp-user-pw').value    = '';
   document.getElementById('inp-user-email').value = '';
   document.getElementById('inp-user-role').value  = '';
+  
+  // Hiện password field (bắt buộc khi thêm mới)
   document.getElementById('wrap-user-pw').style.display = '';
+  document.getElementById('pw-required').style.display = 'inline'; // Hiện dấu *
+  document.getElementById('pw-hint').style.display = 'none'; // Ẩn hint
+  document.getElementById('inp-user-pw').placeholder = '';
+  
   document.getElementById('inp-username').disabled = false;
   _getModal().show();
 }
@@ -60,8 +67,15 @@ async function editUser(id) {
   document.getElementById('inp-username').value   = d.username;
   document.getElementById('inp-user-email').value = d.email || '';
   document.getElementById('inp-user-role').value  = _userRoles.find(r => r.roleName === d.roleName)?.id || '';
-  document.getElementById('wrap-user-pw').style.display  = 'none';
-  document.getElementById('inp-username').disabled       = false; // cho phép sửa username
+  
+  // Hiện password field (không bắt buộc khi sửa)
+  document.getElementById('wrap-user-pw').style.display  = ''; // HIỆN ra thay vì ẩn
+  document.getElementById('inp-user-pw').value = ''; // Clear password
+  document.getElementById('pw-required').style.display = 'none'; // Ẩn dấu *
+  document.getElementById('pw-hint').style.display = 'block'; // Hiện hint
+  document.getElementById('inp-user-pw').placeholder = 'Nhập mật khẩu mới nếu muốn đổi...';
+  
+  document.getElementById('inp-username').disabled = false;
   _getModal().show();
 }
 
@@ -71,23 +85,43 @@ async function saveUser() {
 
   try {
     if (_userEditId) {
-      await userApi.update(_userEditId, {
-        username: document.getElementById('inp-username').value.trim(),
-        email:    document.getElementById('inp-user-email').value.trim(),
-        roleId,
-      });
+      // === EDIT MODE ===
+      const username = document.getElementById('inp-username').value.trim();
+      const email = document.getElementById('inp-user-email').value.trim();
+      const newPassword = document.getElementById('inp-user-pw').value.trim();
+
+      // 1. Update thông tin cơ bản
+      await userApi.update(_userEditId, { username, email, roleId });
+
+      // 2. Nếu có nhập mật khẩu mới → reset password
+      if (newPassword) {
+        if (newPassword.length < 6) {
+          Toast.warning('Mật khẩu phải có ít nhất 6 ký tự.');
+          return;
+        }
+        await userApi.resetPassword(_userEditId, { newPassword });
+      }
+
+      Toast.success('Cập nhật thành công.');
     } else {
+      // === CREATE MODE ===
       const username = document.getElementById('inp-username').value.trim();
       const password = document.getElementById('inp-user-pw').value;
-      const email    = document.getElementById('inp-user-email').value.trim();
+      const email = document.getElementById('inp-user-email').value.trim();
+
       if (!username) { Toast.warning('Vui lòng nhập username.'); return; }
       if (!password) { Toast.warning('Vui lòng nhập mật khẩu.'); return; }
+      if (password.length < 6) { Toast.warning('Mật khẩu phải có ít nhất 6 ký tự.'); return; }
+
       await userApi.create({ username, password, email, roleId });
+      Toast.success('Thêm tài khoản thành công.');
     }
-    Toast.success('Lưu thành công.');
+
     _getModal().hide();
     loadUsers(Pagination.getPage('pagination-users'), Pagination.getSize('pagination-users'));
-  } catch (e) { Toast.error(e.message); }
+  } catch (e) { 
+    Toast.error(e.message); 
+  }
 }
 
 async function deleteUser(id) {

@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:sqlserver://${DB_HOST:localhost}:${DB_PORT:1433};databaseName=${DB_NAME:CTDTDH_INTRACOM};encrypt=true;trustServerCertificate=false
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+# Chỉ ghi log lỗi trên production
+logging:
+  level:
+    vn.intracom.training: INFO
+    org.springframework.security: WARN
+    org.hibernate: WARN
+  file:
+    name: logs/intracom-training.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 30
+
+app:
+  jwt:
+    secret: ${JWT_SECRET}     # Đọc secret từ biến môi trường
+    expiration-ms: 28800000   # 8 giờ

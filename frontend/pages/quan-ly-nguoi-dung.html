@@ -53,8 +53,14 @@
         <input type="text" id="inp-username" class="form-control form-control-sm" autocomplete="off">
       </div>
       <div class="col-12" id="wrap-user-pw">
-        <label class="form-label">Mật khẩu <span class="text-danger">*</span></label>
+        <label class="form-label">
+          Mật khẩu <span class="text-danger" id="pw-required">*</span>
+        </label>
         <input type="password" id="inp-user-pw" class="form-control form-control-sm" autocomplete="new-password">
+        <!-- Thêm ghi chú cho chế độ sửa -->
+        <small class="text-muted" id="pw-hint" style="display:none;">
+          Để trống nếu không muốn đổi mật khẩu
+        </small>
       </div>
       <div class="col-12">
         <label class="form-label">Email</label>
